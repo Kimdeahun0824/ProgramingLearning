@@ -17,6 +17,7 @@ namespace Switch
              * 파일명 : 이름_날자.zip
              **/
 
+            //가독성을 위해 문제별로 다른 클래스로 구현부를 분할
             Lab1 lab1 = new Lab1();
             Lab2 lab2 = new Lab2();
             Lab3 lab3 = new Lab3();
