@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +10,7 @@ namespace Switch
 {
     internal class Class1
     {
-        static void study1()
+        public Class1()
         {
             /**
              * 선택문인 Switch 문은 값에 따라 다양한 제어를 처리할 수 있다. 조건을 처리할 내용이 많은 경우 유용하다.
@@ -580,11 +582,11 @@ namespace Switch
              * 피연산자는 0~99 사이의 숫자 난수 한 번이라도 맞으면 종료 틀리면 리트라이
              **/
 
-            Random rand = new Random();
-            int randomNum1, randomNum2;
-            int randOperator = 0;
-            int userInputNum = 0;
-            bool oxCheck = false;
+            //Random rand = new Random();
+            //int randomNum1, randomNum2;
+            //int randOperator = 0;
+            //int userInputNum = 0;
+            //bool oxCheck = false;
 
             //randomNum1 = rand.Next(99);
             //randomNum2 = rand.Next(99);
@@ -607,97 +609,203 @@ namespace Switch
              * 뺄셈, 곱셋, 나눗셈, 문제도 출제 -> 나눗셈 예외처리 (무한대 값 주의)
              **/
 
-            oxCheck = false;
-            randOperator = rand.Next(4);
-            randomNum1 = rand.Next(99);
-            randomNum2 = rand.Next(99);
-            double divisionNum = 0.0f;
-            double floatUserInputNum = 0.0f;
-            switch (randOperator)
+            //oxCheck = false;
+            //randOperator = rand.Next(4);
+            //randomNum1 = rand.Next(99);
+            //randomNum2 = rand.Next(99);
+            //double divisionNum = 0.0f;
+            //double floatUserInputNum = 0.0f;
+            //switch (randOperator)
+            //{
+            //    case 0:
+            //        Console.WriteLine($"{randomNum1} + {randomNum2} = ?");
+            //        break;
+            //    case 1:
+            //        Console.WriteLine($"{randomNum1} - {randomNum2} = ?");
+            //        break;
+            //    case 2:
+            //        Console.WriteLine($"{randomNum1} * {randomNum2} = ?");
+            //        break;
+            //    case 3:
+            //        Console.WriteLine($"{randomNum1} / {randomNum2} = ?");
+            //        break;
+            //}
+            //while (!oxCheck)
+            //{
+            //    if (randOperator.Equals(3))
+            //    {
+            //        divisionNum = Math.Round((double)randomNum1 / randomNum2, 2);
+            //    }
+            //    else
+            //    {
+            //        /* Do Nothing */
+            //    }
+            //    double.TryParse(Console.ReadLine(), out floatUserInputNum);
+            //    switch (randOperator)
+            //    {
+            //        case 0:
+            //            if (floatUserInputNum.Equals(randomNum1 + randomNum2))
+            //            {
+            //                Console.WriteLine("정답");
+            //                oxCheck = true;
+            //            }
+            //            else
+            //            {
+            //                Console.WriteLine("오답 다시");
+            //                Console.WriteLine(randomNum1 + randomNum2);
+            //            }
+            //            break;
+            //        case 1:
+            //            if (floatUserInputNum.Equals(randomNum1 - randomNum2))
+            //            {
+            //                Console.WriteLine("정답");
+            //                oxCheck = true;
+            //            }
+            //            else
+            //            {
+            //                Console.WriteLine("오답 다시");
+            //                Console.WriteLine(randomNum1 - randomNum2);
+            //            }
+            //            break;
+            //        case 2:
+            //            if (floatUserInputNum.Equals(randomNum1 * randomNum2))
+            //            {
+            //                Console.WriteLine("정답");
+            //                oxCheck = true;
+            //            }
+            //            else
+            //            {
+            //                Console.WriteLine("오답 다시");
+            //                Console.WriteLine(randomNum1 * randomNum2);
+            //            }
+            //            break;
+            //        case 3:
+            //            if (floatUserInputNum.Equals(divisionNum))
+            //            {
+            //                Console.WriteLine("정답");
+            //                oxCheck = true;
+            //            }
+            //            else
+            //            {
+            //                Console.WriteLine("오답 다시");
+            //                if (divisionNum < 1)
+            //                {
+            //                    Console.WriteLine("0{0:.00}", divisionNum);
+            //                }
+            //                else
+            //                {
+            //                    Console.WriteLine("{0:.00}", divisionNum);
+            //                }
+            //            }
+            //            break;
+            //    }   //switch
+            //}   //while
+
+            /**
+             * foreach 문은 배열(Array) 이나 컬렉션(Collection) 같은 값을 여러개 담고 있는 데이터 구조에서
+             * 각각의 데이터가 들어있는 만큼 반복하는 반복문, 데이터 개수나 반복 조건을 처리할 필요가 없다.
+             **/
+
+            // string 에서 글자를 하나씩 출력
+            //string stringText = "Hello World!";
+
+            //int loopCount = 0;
+            //foreach(char oneCharacter in stringText) 
+            //{ 
+            //    Console.Write($"{oneCharacter} ");
+            //    loopCount++;
+            //}
+            //Console.WriteLine();
+            //Console.WriteLine($"Loop Count : {loopCount}, stringText's length : {stringText.Length}");
+
+            /**
+             * 1~100 숫자 중에서 3의 배수이면서 4의 배수인 정수 합 구하기
+             **/
+
+            //int sum = 0;
+            //for (int index = 1; index <= 100; index++)
+            //{
+            //    if (index % 3 == 0 && index % 4 == 0)
+            //    {
+            //        sum += index;
+            //        Console.WriteLine(index);
+            //        Console.WriteLine(sum);
+            //    }
+            //}
+
+
+            /**
+             * 두 갱의 정수를 입력 받아서 두 수의 차를 출력하는 프로그램 작성
+             * 조건 :  항상 큰 수에서 작은수를 뼨 결과를 출력 결과는 언제나 0 이상 이어야 함
+             **/
+            //int userInputNum1, userInputNum2;
+            //int result = 0;
+            //int.TryParse(Console.ReadLine(), out userInputNum1);
+            //int.TryParse(Console.ReadLine(), out userInputNum2);
+            //if(userInputNum1>userInputNum2)
+            //{
+            //    result = userInputNum1-userInputNum2;
+            //}else
+            //{
+            //    result = userInputNum2 - userInputNum1;
+            //}
+            //Console.WriteLine(result);
+
+            /**
+             * 구구단을 출력하되 짝수 (2단, 4단, 6단, 8단)만 출력하는 프로그램을 작성
+             * 2단은 2*2 까지만
+             * 4단은 4*4 까지만
+             * 6단은 6*6 까지만
+             * 8단은 8*8 까지만
+             * 출력한다
+             * break와 continue를 사용할 것
+             **/
+            //int index1 = 1, index2 = 0;
+            //int result = 0;
+            //for (; index2 <= 9; index2++)
+            //{
+            //    for (; index1 <= index2; index1++)
+            //    {
+            //        if (index2%2==0)
+            //        {
+            //            result = index2 * index1;
+            //            Console.WriteLine($"{index2}*{index1}={result}");
+            //        }
+            //    }
+            //    index1 = 1;
+            //}
+
+            /**
+             * 다음 식을 만족하는 모든 A와 Z를 구하는 프로그램을 작성
+             * 조건 : AZ + ZA = 99
+             **/
+            //string num1 = "3";
+            //string num2 = "6";
+            //string sum1 = num1 + num2;
+            //string sum2 = num2 + num1;
+            //int sum = int.Parse(sum1) + int.Parse(sum2);
+            //Console.WriteLine(sum);
+
+            int num1 = 1;
+            int num2 = 1;
+            string sum1 = null;
+            string sum2 = null;
+            int intSum = 0;
+            for (; num1 <= 9; num1++)
             {
-                case 0:
-                    Console.WriteLine($"{randomNum1} + {randomNum2} = ?");
-                    break;
-                case 1:
-                    Console.WriteLine($"{randomNum1} - {randomNum2} = ?");
-                    break;
-                case 2:
-                    Console.WriteLine($"{randomNum1} * {randomNum2} = ?");
-                    break;
-                case 3:
-                    Console.WriteLine($"{randomNum1} / {randomNum2} = ?");
-                    break;
+                for (; num2 <= 9; num2++)
+                {
+                    sum1 = Convert.ToString(num1) + Convert.ToString(num2);
+                    sum2 = Convert.ToString(num2) + Convert.ToString(num1);
+                    intSum = int.Parse(sum1) + int.Parse(sum2);
+                    if(intSum.Equals(99))
+                    {
+                        Console.WriteLine($"{sum1}+{sum2}={intSum}");
+                    }
+                }
+                num2 = 0;
+                
             }
-            while (!oxCheck)
-            {
-                if (randOperator.Equals(3))
-                {
-                    divisionNum = Math.Round((double)randomNum1 / randomNum2, 2);
-                }
-                else
-                {
-                    /* Do Nothing */
-                }
-                double.TryParse(Console.ReadLine(), out floatUserInputNum);
-                switch (randOperator)
-                {
-                    case 0:
-                        if (floatUserInputNum.Equals(randomNum1 + randomNum2))
-                        {
-                            Console.WriteLine("정답");
-                            oxCheck = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("오답 다시");
-                            Console.WriteLine(randomNum1 + randomNum2);
-                        }
-                        break;
-                    case 1:
-                        if (floatUserInputNum.Equals(randomNum1 - randomNum2))
-                        {
-                            Console.WriteLine("정답");
-                            oxCheck = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("오답 다시");
-                            Console.WriteLine(randomNum1 - randomNum2);
-                        }
-                        break;
-                    case 2:
-                        if (floatUserInputNum.Equals(randomNum1 * randomNum2))
-                        {
-                            Console.WriteLine("정답");
-                            oxCheck = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("오답 다시");
-                            Console.WriteLine(randomNum1 * randomNum2);
-                        }
-                        break;
-                    case 3:
-                        if (floatUserInputNum.Equals(divisionNum))
-                        {
-                            Console.WriteLine("정답");
-                            oxCheck = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("오답 다시");
-                            if (divisionNum < 1)
-                            {
-                                Console.WriteLine("0{0:.00}", divisionNum);
-                            }
-                            else
-                            {
-                                Console.WriteLine("{0:.00}", divisionNum);
-                            }
-                        }
-                        break;
-                }   //switch
-            }   //while
 
         }   //main
     }

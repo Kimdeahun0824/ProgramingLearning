@@ -18,11 +18,11 @@ namespace Switch
              **/
 
             //가독성을 위해 문제별로 다른 클래스로 구현부를 분할
-            Lab1 lab1 = new Lab1();
-            Lab2 lab2 = new Lab2();
-            Lab3 lab3 = new Lab3();
+            //Lab1 lab1 = new Lab1();
+            //Lab2 lab2 = new Lab2();
+            //Lab3 lab3 = new Lab3();
 
-            
+            Class1 class1 = new Class1();
 
             
 
