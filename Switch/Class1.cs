@@ -742,10 +742,11 @@ namespace Switch
             //int result = 0;
             //int.TryParse(Console.ReadLine(), out userInputNum1);
             //int.TryParse(Console.ReadLine(), out userInputNum2);
-            //if(userInputNum1>userInputNum2)
+            //if (userInputNum1 > userInputNum2)
             //{
-            //    result = userInputNum1-userInputNum2;
-            //}else
+            //    result = userInputNum1 - userInputNum2;
+            //}
+            //else
             //{
             //    result = userInputNum2 - userInputNum1;
             //}
@@ -766,7 +767,7 @@ namespace Switch
             //{
             //    for (; index1 <= index2; index1++)
             //    {
-            //        if (index2%2==0)
+            //        if (index2 % 2 == 0)
             //        {
             //            result = index2 * index1;
             //            Console.WriteLine($"{index2}*{index1}={result}");
@@ -779,33 +780,27 @@ namespace Switch
              * 다음 식을 만족하는 모든 A와 Z를 구하는 프로그램을 작성
              * 조건 : AZ + ZA = 99
              **/
-            //string num1 = "3";
-            //string num2 = "6";
-            //string sum1 = num1 + num2;
-            //string sum2 = num2 + num1;
-            //int sum = int.Parse(sum1) + int.Parse(sum2);
-            //Console.WriteLine(sum);
 
-            int num1 = 1;
-            int num2 = 1;
-            string sum1 = null;
-            string sum2 = null;
-            int intSum = 0;
-            for (; num1 <= 9; num1++)
-            {
-                for (; num2 <= 9; num2++)
-                {
-                    sum1 = Convert.ToString(num1) + Convert.ToString(num2);
-                    sum2 = Convert.ToString(num2) + Convert.ToString(num1);
-                    intSum = int.Parse(sum1) + int.Parse(sum2);
-                    if(intSum.Equals(99))
-                    {
-                        Console.WriteLine($"{sum1}+{sum2}={intSum}");
-                    }
-                }
-                num2 = 0;
+            //int num1 = 1;
+            //int num2 = 1;
+            //string sum1 = null;
+            //string sum2 = null;
+            //int intSum = 0;
+            //for (; num1 <= 9; num1++)
+            //{
+            //    for (; num2 <= 9; num2++)
+            //    {
+            //        sum1 = Convert.ToString(num1) + Convert.ToString(num2);
+            //        sum2 = Convert.ToString(num2) + Convert.ToString(num1);
+            //        intSum = int.Parse(sum1) + int.Parse(sum2);
+            //        if(intSum.Equals(99))
+            //        {
+            //            Console.WriteLine($"{sum1}+{sum2}={intSum}");
+            //        }
+            //    }
+            //    num2 = 0;
                 
-            }
+            //}
 
         }   //main
     }
