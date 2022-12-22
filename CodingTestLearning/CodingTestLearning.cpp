@@ -3,37 +3,29 @@
 
 #include <iostream>
 #include <vector>
-#include <map>
 #include <algorithm>
 
 using namespace std;
 
-int solution(vector<int> array);
+int solution(vector<int> array, int height);
 
 int main()
 {
-	vector<int> input1 = { 1,2,3,3,3,4 };
-	vector<int> input2 = { 1,1,2,2 };
-	vector<int> input3 = { 1 };
-	cout << solution(input1) << endl;
-
+	vector<int> array = { 168 };
+	cout << solution(array, 167) << endl;
 }
 
-int solution(vector<int> array) {
+int solution(vector<int> array, int height) {
 	int answer = 0;
-	vector<int> valueCheckVector;
-	vector<int> valueSaveVector;
-
-	if (valueCheckVector.empty())
-	{
-		valueCheckVector.push_back(array[0]);
-		valueSaveVector[0] += 1;
-	}
-
-	for (auto a : array) {
-		
-	}
+	sort(array.begin(), array.end());
 	
+	for (int index = array.size()-1; index > 0; index--) {
+		if (height < array[index])
+		{
+			answer++;
+		}
+	}
+
 
 	return answer;
 }

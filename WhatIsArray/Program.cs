@@ -2,6 +2,10 @@
 
 // System 이라는 어셈블리에서 이것 저것 여러 기능을 가져와사 사용할 거라는 뜻
 using System;
+using System.CodeDom.Compiler;
+using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 //내 프로그램 이름, 
 namespace WhatIsArray
@@ -10,6 +14,7 @@ namespace WhatIsArray
     //Class C#에서는 모든 요소들이 클래스 안에 있어야 함
     internal class Program
     {
+
         // Main 메서드는 무조건 1개는 있어야 함. -> C# 콘솔을 사용할 때 (Unity는 없을 수 있음)
         static void Main(string[] args)
         {
@@ -317,6 +322,28 @@ namespace WhatIsArray
 
             //}   //while
 
+            //int number1 = 1;
+            //int number2 = 2;
+            //int number3 = 3;
+            //int number4 = 4;
+            //int number5 = 5;
+            //int[] numbers = new int[5] { 1, 2, 3, 4, 5 };
+
+            //Console.WriteLine(number1);
+
+            //for (int index = 0; index < numbers.Length; index++)
+            //{
+            //    Console.WriteLine(numbers[index]);
+            //}
+
+            //foreach (var element in numbers)
+            //{
+            //    Console.WriteLine(element);
+            //}
+
+
+            /* ######################################### 2022-12-22 ############################################### */
+
             /**
              * 컬렉션
              * 이름 하나로 데이터 여러 개를 담을 수 있는 자료 구조를 컬렉션(Colletcion) 또는
@@ -343,26 +370,310 @@ namespace WhatIsArray
             // 배열의 선언과 초기화
             //int[] numbers = new int[5] { 100, 200, 300, 400, 500 };
 
-            int number1 = 1;
-            int number2 = 2;
-            int number3 = 3;
-            int number4 = 4;
-            int number5 = 5;
-            int[] numbers = new int[5] { 1, 2, 3, 4, 5 };
+            //int number = 1_0821;
+            //Console.WriteLine("64 Mod 연산 : {0}",number%64);
 
-            Console.WriteLine(number1);
+            /**
+             * 다차원 배열
+             * 2차원 배열, 3차원 배열 처럼 차원이 2개 이상인 배열을 다차원 배열이라고 한다.
+             * C#에서 배열을 선언할 때는 콤말를 기준으로 차원을 구분한다.
+             **/
 
-            //for (int index = 0; index < numbers.Length; index++)
+            //int[] oneArray = new int[2] { 1, 2 };
+            //int[,] twoArray = new int[3, 3];
+            //int[,,] threeArray = new int[2, 2, 2]
             //{
-            //    Console.WriteLine(numbers[index]);
+            //    { { 1, 2 }, { 3, 4 } },
+            //    { { 5, 6 }, { 7, 8 } }
+            //};
+
+
+            //// 3행 3열짜리 배열에서 행과 열이 같으면 1, 다르면 0을 출력
+
+            //for (int y = 0; y <= twoArray.GetUpperBound(0); y++)
+            //{
+            //    for (int x = 0; x <= twoArray.GetUpperBound(1); x++)
+            //    {
+            //        if (x.Equals(y)) { twoArray[y, x] = 1; }
+            //        else { twoArray[y, x] = 0; }
+            //    }   //loop : 값을 대입하는 루프
             //}
 
-            //foreach (var element in numbers)
+            ///**
+            // * Array.GetUpperBound(int dimension) 배열에서 지정된 차원의 마지막 요소의 인덱스를 가져옴
+            // * return : 배열에 있는 지정된 차원의 마지막 요소의 인덱스, 지정된 차원이 비어있는 경우 -1
+            // **/
+
+            //for (int y = 0; y <= twoArray.GetUpperBound(0); y++)
             //{
-            //    Console.WriteLine(element);
+            //    for (int x = 0; x <= twoArray.GetUpperBound(1); x++)
+            //    {
+            //        Console.Write(twoArray[y, x]);
+            //    }   //loop : 값을 출력하는 루프
+            //    Console.WriteLine();
             //}
 
-            //프로그램은 여기서 끝난다.
+            /**
+             * 가변 배열
+             * 차원이 2개 이상인 배열은 다차원 배열이고, 배열 길이가 가변 길이인 배열은 가변 배열이라고 한다.
+             **/
+
+            //int[][] zagArray = new int[2][];
+            //zagArray[0] = new int[] { 1, 2 };
+            //zagArray[1] = new int[] { 3, 4, 5 };
+
+            //for(int y = 0; y <= 2; y++)
+            //{
+            //    for(int x=0; x < zagArray[y].Length; x++)
+            //    {
+            //        Console.Write("{0}", zagArray[y][x]);
+            //    }
+            //    Console.WriteLine();
+            //}
+
+            //int[] intArray;         // int 형 데이터 타입의 intArray 라는 배열을 선언
+            //intArray = new int[3];  // int 형 데이터 타입의 변수를 3개 메모리에 할당
+
+            //intArray[0] = 1;        // intArray 0번째 인덱스에 1이라는 정수값을 대입
+            //intArray[1] = 2;        // intArray 1번째 인덱스에 2이라는 정수값을 대입
+            //intArray[2] = 3;        // intArray 2번째 인덱스에 3이라는 정수값을 대입
+
+            //// 배열 직접 출력해본다.
+            //for (int index = 0; index < 3; index++)
+            //{
+            //    Console.WriteLine($"{index} 번째 인덱스의 값 -> {intArray[index]}");
+            //}   // loop : 3번 도는 루프
+
+            //Console.WriteLine();
+
+            //// intArray 배열에서 int 형 데이터 타입의 값을 하니씩 뽑아서 index에 저장 할거임
+            //foreach (var index in intArray)
+            //{
+            //    Console.WriteLine($"intArray 배열에서 뽑아온 값 -> {index}");
+            //}   // loop : intArray 배열의 길이만큼 도는 루프
+
+            //Console.WriteLine();
+
+            //for (int index = 0; index < intArray.GetLength(0); index++)
+            //{
+            //    Console.WriteLine($"{index} 번째 인덱스의 값 -> {intArray[index]}");
+            //}   // loop : intArray 배열의 길이만큼 도는 루프
+
+            //Console.WriteLine();
+
+            //for (int index = 0; index <= intArray.GetUpperBound(0); index++)
+            //{
+            //    Console.WriteLine($"{index} 번째 인덱스의 값 -> {intArray[index]}");
+            //}   // loop : intArray 배열의 길이만큼 도는 루프
+
+            //Console.WriteLine();
+
+
+            /**##################################################################################################
+             * 배열을 사용하여 국어 점수의 총점과 평균 구하기
+             * 학생 3명의 점수를 저장하는 배열 선언해서, 각 학생별로 점수를 할당하고 (범위는 1~100 점)
+             * 모든 점수의 총점과 평균을 구해서 출력하는 프로그램 
+             *      - userInput 받아서 프로그램 작성 해볼 것.
+             *      - userInput은 3회 (3명의 학생이니까)
+             *      - 점수 범위 (범위는 1~100 점)
+             *      - 이상한 입력 예외처리
+             **/
+
+            //int[] studentScore = new int[3];
+            //int scoreSum = 0;
+
+            //for (int index = 0; index < studentScore.Length; index++)
+            //{
+            //    Console.Write("점수 입력 : ");
+            //    if (int.TryParse(Console.ReadLine(), out studentScore[index]) && studentScore[index] >= 0 && 100 >= studentScore[index])
+            //    {
+            //        scoreSum += studentScore[index];
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("잘못된 입력");
+            //        index--;
+            //    }
+            //}
+
+            //Console.WriteLine($"총점 : {scoreSum}\n평균 : {(float)scoreSum / studentScore.Length}");
+
+            /**
+             * Lab 1. 배열에서 최대값 찾기
+             * 크기가 100인 배여을 1부터 100 사이의 난수로 채우고 배열 요소 중에서 최대값을 찾아보자.
+             **/
+
+            Random rand = new Random();
+            int[] intArray = new int[100];
+
+            for (int index = 0; index < intArray.Length; index++)
+            {
+                intArray[index] = rand.Next(1, 100);
+            }
+            Array.Sort(intArray);
+            foreach(int iiterator in intArray)
+            {
+                Console.WriteLine(iiterator);
+            }
+            Console.WriteLine();
+            //Console.WriteLine(intArray[intArray.Length - 1]);
+
+
+            /**
+             * Lab 2. 사과를 제일 좋아하는 사람찾기
+             * 사람들 5명(사람1, 사람2 ... 사람5)에게 아침에 먹는 사과 개수를 입력하도록 요청하는 프로그램 작성
+             * 데이터 입력이 마무리 되면 누가 가장 많은 사과를 아침으로 먹었는지 출력 (기본형)
+             *      - 이상한 입력 예외처리
+             *      - 제일 적게 먹은 사람도 찾도록 수정 (변형 1)
+             *      - 먹은 사과의 개수 순으로 정렬 알고리즘은 본인이 사용한 것으로 하되
+             *      - 알고리즘을 잘 모르겠다면 버블 정렬을 도전 해볼것 (변형 2)
+             *      - 알고리즘을 잘 알겠다면 Merge sort 도전 해볼 것 (hard)
+             *      - 정렬 도전 시 유저 입력 X
+             *      - 난수로 100~1000개 정도의 값 입력
+             *      - 중복 제거
+             *      - 시간초는 전혀 상관 없음
+             *      - 본인 능력껏 기본형, 변형1, 변형2, hard 순서로 도전
+             **/
+
+            //int[] peoples = new int[5];
+            //bool numberCheck = false;
+
+            //for(int index = 0; index < peoples.Length; index++)
+            //{
+            //    numberCheck = int.TryParse(Console.ReadLine(), out peoples[index]);
+            //    if(!numberCheck)
+            //    {
+            //        index--;
+            //    }
+            //}
+            //Array.Sort(peoples);
+            //foreach(int index in peoples)
+            //{
+            //    Console.WriteLine(index);
+            //}
+
+            //Random rand = new Random();
+            int[] peoples = new int[100];
+            for (int index = 0; index < peoples.Length; index++)
+            {
+                peoples[index] = rand.Next(1, 101);
+                // 0이하의 값, 중복값 예외처리
+                for (int index2 = 0; index2 < peoples.Length; index2++)
+                {
+                    if (index != index2)
+                    {
+                        if (peoples[index] == peoples[index2] || peoples[index] <= 0)
+                        {
+                            index--;
+                        }
+                    }
+                }
+            }
+            for (int index = 0; index < peoples.Length; index++)
+            {
+                Console.Write("{0} ", peoples[index]);
+                if (index % 10 == 0 && index != 0)
+                {
+                    Console.WriteLine();
+                }
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("==============================================");
+
+            MergeSort(peoples, 0, peoples.Length - 1);
+            for (int index = 0; index < peoples.Length; index++)
+            {
+                Console.Write("{0} ", peoples[index]);
+                if (index % 10 == 0 && index != 0)
+                {
+                    Console.WriteLine();
+                }
+            }
+
+
+            /**
+             * 2022-12-22 과제
+             * Lab 1,2 코딩 했던 내용 주석 달아서 해석해서 제출
+             *      - 미완성인 경우 이해하고 있는 내용까지만이라도 적어서 제출할 것.
+             *      - 어느 단계까지 도전을 했는지도 포함할 것.
+             *      - 용량 등 필요없는 파일이 섞이지 않도록 주의할 것.
+             **/
+
+
+        }   //main
+
+        /**
+         * 합병 정렬(MergeSort) : 분할, 정복, 결합 단계로 이루어짐
+         * 분할(Divide) : 입력 배열을 같은 크기의 2개 배열로 분할
+         * 정복(Conquer) : 부분 배열을 정렬, 부분 배열의 크기가 충분히 작지 않으면 다시 분할
+         * 결합(Conbine) : 정렬된 부분 배열을 하나의 배열에 합병
+         **/
+
+        //분할 / 정복 부분
+        public static void MergeSort(int[] list, int left, int right)
+        {
+            int mid;
+            if (left < right)
+            {
+                mid = (left + right) / 2;
+                MergeSort(list, left, mid);
+                MergeSort(list, mid + 1, right);
+                Merge(list, left, mid, right);
+            }
         }
+
+        //결합 부분
+        public static void Merge(int[] list, int leftIdx, int midIdx, int rightIdx)
+        {
+            int[] sorted = new int[1000];
+
+            int index1 = leftIdx;
+            int index2 = midIdx + 1;
+            int index3 = leftIdx;
+            int index4 = 0;
+
+            while (index1 <= midIdx && index2 <= rightIdx)
+            {
+                if (list[index1] <= list[index2])
+                {
+                    sorted[index3] = list[index1];
+                    index3++;
+                    index1++;
+                }
+                else
+                {
+                    sorted[index3] = list[index2];
+                    index3++;
+                    index2++;
+                }
+            }
+
+            if (index1 > midIdx)
+            {
+                for (index4 = index2; index4 <= rightIdx; index4++)
+                {
+                    sorted[index3] = list[index4];
+                    index3++;
+                }
+            }
+            else
+            {
+                for (index4 = index1; index4 <= midIdx; index4++)
+                {
+                    sorted[index3] = list[index4];
+                    index3++;
+                }
+            }
+
+            for (index4 = leftIdx; index4 <= rightIdx; index4++)
+            {
+                list[index4] = sorted[index4];
+            }
+
+        }
+
     }
+
+
 }
