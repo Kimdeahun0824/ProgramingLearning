@@ -7,26 +7,24 @@
 
 using namespace std;
 
-int solution(vector<int> array, int height);
+int solution(vector<int> array, int n);
 
 int main()
 {
 	vector<int> array = { 168 };
 	cout << solution(array, 167) << endl;
+	string a = "";
+	reverse(a.begin(),a.end());
+	sort(array.begin(),array.end());
 }
 
-int solution(vector<int> array, int height) {
+int solution(vector<int> array, int n) {
 	int answer = 0;
-	sort(array.begin(), array.end());
-	
-	for (int index = array.size()-1; index > 0; index--) {
-		if (height < array[index])
-		{
+	for (int index = 0; index < array.size(); index++) {
+		if (array[index] == n) {
 			answer++;
 		}
 	}
-
-
 	return answer;
 }
 
