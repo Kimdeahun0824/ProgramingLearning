@@ -8,34 +8,18 @@ namespace LifeinAdventure
 {
     internal class TitleScene
     {
-        private string titleText;
-        public TitleScene()
-        {
-            titleText = "============================\n" +
-                    "**      모험가 이야기     **\n" +
-                    "============================\n" +
-                    "\n\n\n\n\n\n" +
-                    "        Tap To Start        ";
-
+        private string mTitle;
+        public TitleScene() {
+            mTitle = "===============================================\n" +
+                                "**               모험가 이야기               **\n" +
+                                "===============================================\n" +
+                                "\n\n\n\n\n\n" +
+                                "                 Tap To Start                 \n";
         }
 
-        public bool TapToStart()
+        public string getTitle()
         {
-
-            if (Console.ReadLine() != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return mTitle;
         }
-
-        public string getTitleText()
-        {
-            return titleText;
-        }
-
     }
 }

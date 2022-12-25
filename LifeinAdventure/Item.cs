@@ -8,28 +8,44 @@ namespace LifeinAdventure
 {
     internal class Item
     {
-        private string ITEMNAME_;
-        private string ITEMINFO_;
-        private int FIGHTINGPOWER_;
+        private string mItemName;
+        private string mItemInfo;
+        private int mItemFightingPower;
 
-        public Item(string itemName, string itemInfo, int fightingPower)
+        public Item(string ItemName, string ItemInfo, int ItemFightingPower)
         {
-            ITEMNAME_ = itemName;
-            ITEMINFO_ = itemInfo;
-            FIGHTINGPOWER_ = fightingPower;
+            this.mItemName = ItemName;
+            this.mItemInfo = ItemInfo;
+            this.mItemFightingPower = ItemFightingPower;
         }
 
-        public string getItemName_()
+        //#################################### Getter / Setter ####################################
+        public string GetItemName()
         {
-            return ITEMNAME_;
+            return this.mItemName;
         }
-        public string getItemInfo()
+        public string GetItemInfo()
         {
-            return ITEMINFO_;
+            return this.mItemInfo;
         }
-        public int getFightingPower()
+        public int GetItemFightingPower()
         {
-            return FIGHTINGPOWER_;
+            return this.mItemFightingPower;
         }
+
+        public void SetItemName(string ItemName)
+        {
+            this.mItemName = ItemName;
+        }
+        public void SetItemInfo(string ItemInfo)
+        {
+            this.mItemInfo = ItemInfo;
+        }
+        public void SetItemFightingPower(int ItemFightingPower)
+        {
+            this.mItemFightingPower = ItemFightingPower;
+        }
+
+        
     }
 }

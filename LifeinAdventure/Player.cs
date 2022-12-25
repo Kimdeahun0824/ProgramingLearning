@@ -8,97 +8,57 @@ namespace LifeinAdventure
 {
     internal class Player
     {
-        private int HP_;
-        private int MP_;
+        private int mHp;
+        private int mMp;
 
-        private int STRONG_;
-        private int AGILITY_;
-        private int INTELLIGENCE_;
-        private int WISDOM_;
-        private int CHARISMA_;
-        private int HEALTH_;
-
+        private int mStrong;
+        private int mAgility;
+        private int mIntelligence;
+        private int mWisdom;
+        private int mCharisma;
+        private int mHealth;
 
         public Player(int Hp, int Mp, int Strong, int Agility, int Intelligence, int Wisdom, int Charisma, int Health)
         {
-            HP_ = Hp;
-            MP_ = Mp;
-            STRONG_ = Strong;
-            AGILITY_ = Agility;
-            INTELLIGENCE_ = Intelligence;
-            WISDOM_ = Wisdom;
-            CHARISMA_ = Charisma;
-            HEALTH_ = Health;
+            mHp = Hp;
+            mMp = Mp;
+            mStrong = Strong;
+            mAgility = Agility;
+            mIntelligence = Intelligence;
+            mWisdom = Wisdom;
+            mCharisma = Charisma;
+            mHealth = Health;
         }
 
+        public int GetHp()
+        {
+            return mHp;
+        }
+        public int GetMp() { return mMp; }
+        public int GetStrong() { return mStrong; }
+        public int GetAgility() { return mAgility; }
+        public int GetIntelligence() { return mIntelligence; }
+        public int GetWisdom() { return mWisdom; }
+        public int GetCharisma() { return mCharisma; }
+        public int GetHealth() { return mHealth; }
 
-        public void setHp(int HP)
-        {
-            HP_ = HP;
-        }
-        public void setMp(int MP)
-        {
-            MP_ = MP;
-        }
-        public void setStrong(int Strong)
-        {
-            STRONG_ = Strong;
-        }
-        public void setAgility(int Agility)
-        {
-            AGILITY_ = Agility;
-        }
-        public void setIntelligence(int Intelligence)
-        {
-            INTELLIGENCE_ = Intelligence;
-        }
-        public void setWisdom(int Wisdom)
-        {
-            WISDOM_ = Wisdom;
-        }
-        public void setCharisma(int Charisma)
-        {
-            CHARISMA_ = Charisma;
-        }
-        public void setHealth(int Health)
-        {
-            HEALTH_ = Health;
-        }
+        public void SetHp(int hp) { mHp = hp; }
+        public void SetMp(int mp) { mMp = mp; }
+        public void SetStrong(int strong) { mStrong = strong; }
+        public void SetAgility(int agility) { mAgility = agility; }
+        public void SetIntelligence(int intelligence) { mIntelligence = intelligence; }
+        public void SetWisdom(int wisdom) { mWisdom = wisdom; }
+        public void SetCharisma(int charisma) { mCharisma = charisma; }
+        public void SetHealth(int health) { mHealth = health; }
 
-        public int getHp()
+        public void HpDamage(int damage)
         {
-            return HP_;
+            mHp -= damage;
         }
-        public int getMp()
+        public void MpDamage(int damage)
         {
-            return MP_;
+            mMp -= damage;
         }
-        public int getStrong()
-        {
-            return STRONG_;
-        }
-        public int getAgility()
-        {
-            return AGILITY_;
-        }
-        public int getIntelligence()
-        {
-            return INTELLIGENCE_;
-        }
-        public int getWisdom()
-        {
-            return WISDOM_;
-        }
-        public int getCharisma()
-        {
-            return CHARISMA_;
-        }
-        public int getHealth()
-        {
-            return HEALTH_;
-        }
-
-
 
     }
 }

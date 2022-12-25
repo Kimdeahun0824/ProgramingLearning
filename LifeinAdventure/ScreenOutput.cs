@@ -8,16 +8,12 @@ namespace LifeinAdventure
 {
     internal class ScreenOutput
     {
-        public ScreenOutput()
+        public void Screen(string text)
         {
+            Console.Write(text);
         }
 
-        public void screenOutPut(string outputText)
-        {
-            Console.WriteLine(outputText);
-        }
-
-        public void screenClear()
+        public void ScreenClear()
         {
             Console.Clear();
         }
