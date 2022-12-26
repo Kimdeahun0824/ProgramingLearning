@@ -15,58 +15,60 @@ namespace Function
          * - 조건 사람은 빈 곳을 다닐 수 있음
          */
 
-        static int FIELDMAX_X = 10;
-        static int FIELDMAX_Y = 10;
-        static string[,] field = new string[FIELDMAX_X, FIELDMAX_Y];
-        static int playerX = 3;
-        static int playerY = 3;
+        static int FIELDMAX_X = 10;                                     // 화면 최대 크기 X
+        static int FIELDMAX_Y = 10;                                     // 화면 최대 크기 Y
+        static string[,] field = new string[FIELDMAX_X, FIELDMAX_Y];    // 화면 출력 내용을 담을 배열
+        static int playerX = 3;                                         // 플레이어 좌표  X
+        static int playerY = 3;                                         // 플레이어 좌표  Y
 
-        static ConsoleKey Input;
-        static bool Escape = false;
+        static ConsoleKeyInfo Input;                                        // 유저 키입력을 받을 변수
+        static bool Escape = false;                                     // 유저 키입력중 Escape를 누를 시 true바뀌는 bool변수
 
         static void Main(string[] args)
         {
-            fieldInit();
-            while (!Escape)
+            fieldInit();                                                // 배열 초기화 함수
+            while (!Escape)                                             // Escape Bool 값이 false면 반복
             {
-                fieldDraw();
-                move();
-                Console.Clear();
+                fieldDraw();                                            // 배열에 담긴 내용 그리는 함수 
+                move();                                                 // player의 좌표값을 변경하는 함수
+                Console.Clear();                                        // 화면 초기화 함수
             }
 
         }
 
-        static ConsoleKey getInput()
-        {
-            ConsoleKeyInfo Input;
-            Input = Console.ReadKey(true);
-            return Input.Key;
+        static ConsoleKey getInput()                                    // 유저 입력을 받을 함수
+        {                                                               
+            Input = Console.ReadKey(true);                              
+            return Input.Key;                                           // 저장받은 ConsoleKey 값을 반환
         }
-        static void fieldInit()
+        static void fieldInit()                                         // 배열 초기화 함수                   
         {
 
-            for (int y = 0; y < FIELDMAX_Y; y++)
+            for (int y = 0; y < FIELDMAX_Y; y++)                        
             {
                 for (int x = 0; x < FIELDMAX_X; x++)
                 {
-                    if (y.Equals(0) || y.Equals(FIELDMAX_Y - 1) || x.Equals(0) || x.Equals(FIELDMAX_X - 1))
+                    if (y.Equals(0)                                     // y값이 0 이라면
+                        || y.Equals(FIELDMAX_Y - 1)                     // y값이 최대 값이라면
+                        || x.Equals(0)                                  // x값이 0 이라면
+                        || x.Equals(FIELDMAX_X - 1))                    // x값이 최대 값이라면
                     {
-                        field[y, x] = "■";
+                        field[y, x] = "■";                              // ■ 대입
                     }
                     else
                     {
-                        field[y, x] = ". ";
+                        field[y, x] = ". ";                             // 아니라면 . 대입
                     }
                 }
             }
         }
-        static void fieldDraw()
+        static void fieldDraw()                                         // 배열에 담긴 내용 그리는 함수
         {
             for (int y = 0; y < FIELDMAX_Y; y++)
             {
                 for (int x = 0; x < FIELDMAX_X; x++)
                 {
-                    if (playerX.Equals(x) && playerY.Equals(y))
+                    if (playerX.Equals(x) && playerY.Equals(y))         // 반복문 index의 값이 플레이어의 좌표라면 배열에 담긴 값 대신 플레이어 출력
                     {
                         Console.Write("♥");
                     }
@@ -79,10 +81,9 @@ namespace Function
                 Console.WriteLine();
             }
         }
-        static void move()
+        static void move()                                              // player의 좌표값을 변경하는 함수
         {
-            Input = getInput();
-            switch (Input)
+            switch (getInput())
             {
                 case ConsoleKey.W:
                     if (playerY < 2)
