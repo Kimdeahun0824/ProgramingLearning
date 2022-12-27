@@ -8,8 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="example.cs" />
     <Compile Remove="Minesweeper.cs" />
     <Compile Remove="Program.cs" />
+    <Compile Remove="Task.cs" />
     <Compile Remove="TicTacToe.cs" />
     <Compile Remove="WhatIsFunction.cs" />
   </ItemGroup>
