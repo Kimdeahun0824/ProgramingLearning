@@ -61,6 +61,7 @@ namespace Function
             Shuffle();                                                              // Shuffle 함수 실행
             Update();                                                               // Update 함수 실행
 
+            Draw();
             if (mGameClear)
             {
                 Console.WriteLine("게임 클리어! (고생했다 나자신)");
@@ -90,6 +91,7 @@ namespace Function
         {
             while (!mValidPuzzle)                                                   // mValidPuzzle bool 값이 true가 나올때까지 도는 반복문
             {
+                mInversion = 0;
                 mValidPuzzle = false;
                 for (int i = 0; i < mPuzzleBoard.Length; i++)
                 {
@@ -172,10 +174,10 @@ namespace Function
                 {
                     Console.Write($"X".PadLeft(4));
                 }
-                else if (mPuzzleClearBoard[i])
-                {
-                    Console.Write("■".PadLeft(4));
-                }
+                //else if (mPuzzleClearBoard[i])
+                //{
+                //    Console.Write("■".PadLeft(4));
+                //}
                 else
                 {
                     Console.Write($"{mPuzzleBoard[i]}".PadLeft(4));
@@ -186,6 +188,7 @@ namespace Function
                 "시도 횟수 : " + mCount + "\n" +
                 "===============\n";
             Console.WriteLine(gameInfo);
+            Console.WriteLine(mInversion);
             //Console.WriteLine($"{mPuzzleBoard[mPlayerPoint]} : {temp}");
         }   // Draw()
 
