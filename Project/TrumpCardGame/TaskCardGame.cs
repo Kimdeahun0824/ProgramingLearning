@@ -22,6 +22,7 @@ namespace TrumpCardGame
         List<Card> cards;
         Player player;
         Dealer dealer;
+        bool gameEnd;
 
         public TaskCardGame()
         {
@@ -35,7 +36,7 @@ namespace TrumpCardGame
             CardShuffle();
             player = new Player(10000);
             dealer = new Dealer();
-
+            gameEnd = false;
 
             //foreach (var card in cards)
             //{
@@ -45,17 +46,20 @@ namespace TrumpCardGame
 
         private void Update()
         {
-            CardGamePlay();
-            //while (true)
-            //{
-
-            //}
+            while (!gameEnd)
+            {
+                CardGamePlay();
+            }
         }
 
         protected override void CardSetup()
         {
             try
             {
+                if (cards != null)
+                {
+                    cards.Clear();
+                }
                 cards = new List<Card>();
                 string[] Marks = new string[4] { "♣", "◆", "♥", "♠" };
 
@@ -144,6 +148,12 @@ namespace TrumpCardGame
         {
             try
             {
+                CardSetup();
+                CardShuffle();
+                if(dealer.Cards != null)
+                {
+                    dealer.Cards.Clear();
+                }
                 dealer.CardDraw(CardDraw());
                 dealer.CardDraw(CardDraw());
                 string GameBoard = "     ===========================\n" +
@@ -194,10 +204,17 @@ namespace TrumpCardGame
                 dealerCards += "  ==========            ==========";
 
                 Console.WriteLine(dealerCards);
+
+                Console.WriteLine($"현재 보유 잔고 : {player.Money}");
+
                 Console.Write("베팅 금액을 입력 : ");
-                player.Betting();
+
+                int bettingMoney = player.Betting();
+
                 player.Card = CardDraw();
+
                 Console.WriteLine("###########당신이 뽑은 카드###########");
+
                 string playerCard = "             ==========\n";
                 if (player.Card.Name == "10")
                 {
@@ -224,15 +241,53 @@ namespace TrumpCardGame
                 playerCard += "             ==========";
                 Console.WriteLine(playerCard);
 
-                ////dealer.Cards.Sort();
-                //if (dealer.Cards[0].Number < dealer.Cards[1].Number)
-                //{
+                if (dealer.Cards[0].Number < dealer.Cards[1].Number)
+                {
+                    if (dealer.Cards[0].Number < player.Card.Number && player.Card.Number < dealer.Cards[1].Number)
+                    {
+                        Console.WriteLine("당신의 승리");
+                        player.AddMoney(bettingMoney * 2);
+                    }
+                    else
+                    {
+                        Console.WriteLine("당신의 패배");
+                    }
+                }
+                else if (dealer.Cards[1].Number <= dealer.Cards[0].Number)
+                {
+                    if (dealer.Cards[1].Number < player.Card.Number && player.Card.Number < dealer.Cards[0].Number)
+                    {
+                        Console.WriteLine("당신의 승리");
+                        player.AddMoney(bettingMoney * 2);
+                    }
+                    else
+                    {
+                        Console.WriteLine("당신의 패배");
+                    }
+                }
 
-                //}
-                //else
-                //{
+                Console.WriteLine("Press To Enter");
+                ConsoleKeyInfo PressToEnter = Console.ReadKey();
+                switch (PressToEnter.Key)
+                {
+                    case ConsoleKey.Enter:
+                        break;
+                    default:
+                        break;
+                }
+                Console.Clear();
 
-                //}
+                if (100000 < player.Money)
+                {
+                    gameEnd = true;
+                    Console.WriteLine("목표금액 달성 게임 종료");
+                }
+                else if (player.Money < 1)
+                {
+                    gameEnd = true;
+                    Console.WriteLine("파산 게임 종료");
+                }
+
             }
             catch (Exception)
             {

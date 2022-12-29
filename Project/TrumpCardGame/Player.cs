@@ -26,6 +26,7 @@ namespace TrumpCardGame
                     if (mMoney < userBettingMoney)
                     {
                         Console.WriteLine("소지한 금액만큼만 배팅하실 수 있습니다. 호갱님");
+                        Console.Write("베팅 금액을 입력 : ");
                         continue;
                     }
                     else
@@ -39,6 +40,11 @@ namespace TrumpCardGame
                     return 0;
                 }
             }
+        }
+
+        public void AddMoney(int money)
+        {
+            mMoney += money;
         }
 
         public int Money
