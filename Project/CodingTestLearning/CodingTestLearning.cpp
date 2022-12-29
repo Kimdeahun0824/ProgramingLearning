@@ -3,25 +3,52 @@
 
 #include <iostream>
 #include <vector>
-//#include <algorithm>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
-string solution(string a, string b);
+int solution(vector<int> array);
 
 int main()
 {
-	cout << solution("aBcd", "B");
+	vector<int> array1 = { 1, 2, 3, 3, 3, 4 };
+	vector<int> array2 = { 1, 1, 2, 2 };
+	vector<int> array3 = { 1 };
+	vector<int> array4 = { 5,7,7,7,7 };
+	cout << solution(array1);
+	//최빈값 찾기
+	// 최빈값이 여러개면 -1 return
 }
 
-string solution(string a, string b)
-{
-	string answer = "";
-	const char* c = b.c_str();
-	a.erase(remove(a.begin(), a.end(), c), a.end());
-	answer = a;
-	
+int solution(vector<int> array) {
+	int answer = 0;
+	sort(array.begin(), array.end());
+	vector<int> ary;
+	for (int i = 0; i < 2001; i++) {
+		ary.push_back(0);
+	}
+	for (int i = 0; i < array.size(); i++) {
+		ary[array[i]]++;
+
+	}
+	int max = 0;
+	int max_index = 0;
+
+	for (int i = 0; i < ary.size(); i++) {
+		//cout << ary[array[i]] << endl;
+		if (ary[i] > max) {
+			max = ary[i];
+			max_index = i;
+		}
+	}
+
+	int count = 0;
+	for (int i = 0; i < ary.size(); i++) {
+		if (ary[i] == max) count++;
+	}
+	if (count > 1) return -1;
+	answer = max_index;
 	return answer;
 }
 
