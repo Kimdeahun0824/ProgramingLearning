@@ -3,28 +3,25 @@
 
 #include <iostream>
 #include <vector>
-#include <algorithm>
+//#include <algorithm>
+#include <string>
 
 using namespace std;
 
-int solution(vector<int> array, int n);
+string solution(string a, string b);
 
 int main()
 {
-	vector<int> array = { 168 };
-	cout << solution(array, 167) << endl;
-	string a = "";
-	reverse(a.begin(),a.end());
-	sort(array.begin(),array.end());
+	cout << solution("aBcd", "B");
 }
 
-int solution(vector<int> array, int n) {
-	int answer = 0;
-	for (int index = 0; index < array.size(); index++) {
-		if (array[index] == n) {
-			answer++;
-		}
-	}
+string solution(string a, string b)
+{
+	string answer = "";
+	const char* c = b.c_str();
+	a.erase(remove(a.begin(), a.end(), c), a.end());
+	answer = a;
+	
 	return answer;
 }
 
