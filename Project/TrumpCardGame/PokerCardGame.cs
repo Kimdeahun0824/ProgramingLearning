@@ -81,12 +81,12 @@ namespace TrumpCardGame
             mDealer.AddCard(CardDraw());
 
             Card card1 = new Card("A", "♠", 1);
-            Card card2 = new Card("2", "♠", 2);
-            Card card3 = new Card("3", "♥", 3);
-            Card card4 = new Card("3", "♠", 3);
-            Card card5 = new Card("3", "♣", 3);
-            Card card6 = new Card("4", "♥", 4);
-            Card card7 = new Card("6", "◆", 6);
+            Card card2 = new Card("K", "♠", 13);
+            Card card3 = new Card("Q", "♠", 12);
+            Card card4 = new Card("J", "◆", 11);
+            Card card5 = new Card("10", "♠", 10);
+            Card card6 = new Card("6", "♣", 6);
+            Card card7 = new Card("5", "♠", 5);
             //mPlayer.AddCard(CardDraw());
             //mPlayer.AddCard(CardDraw());
             //mPlayer.AddCard(CardDraw());
