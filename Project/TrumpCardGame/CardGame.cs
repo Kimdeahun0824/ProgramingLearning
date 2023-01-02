@@ -8,8 +8,6 @@ namespace TrumpCardGame
 {
     abstract class CardGame
     {
-        protected abstract void CardSetup();
-        protected abstract void CardShuffle();
         protected abstract Card CardDraw();
         protected abstract void CardGamePlay();
     }

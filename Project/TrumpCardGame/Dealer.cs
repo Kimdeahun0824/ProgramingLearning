@@ -14,7 +14,7 @@ namespace TrumpCardGame
             mCards = new List<Card>();
         }
 
-        public void CardDraw(Card card)
+        public void AddCard(Card card)
         {
             mCards.Add(card);
         }

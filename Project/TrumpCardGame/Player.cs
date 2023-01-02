@@ -9,11 +9,12 @@ namespace TrumpCardGame
     internal class Player
     {
         private int mMoney;
-        private Card mCard;
+        private List<Card> mCards;
 
         public Player(int money)
         {
             mMoney = money;
+            mCards = new List<Card>();
         }
 
         public int Betting()
@@ -42,6 +43,11 @@ namespace TrumpCardGame
             }
         }
 
+        public void AddCard(Card card)
+        {
+            mCards.Add(card);
+        }
+
         public void AddMoney(int money)
         {
             mMoney += money;
@@ -53,10 +59,10 @@ namespace TrumpCardGame
             set { mMoney = value; }
         }
 
-        public Card Card
+        public List<Card> Cards
         {
-            get { return mCard; }
-            set { mCard = value; }
+            get { return mCards; }
+            set { mCards = value; }
         }
     }
 }

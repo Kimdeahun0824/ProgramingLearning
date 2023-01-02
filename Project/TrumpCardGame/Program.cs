@@ -4,7 +4,8 @@
     {
         static void Main(string[] args)
         {
-            TaskCardGame taskCardGame= new TaskCardGame();
+            //TaskCardGame taskCardGame= new TaskCardGame();
+            PokerCardGame pokerCardGame = new PokerCardGame();
         }
     }
 }
