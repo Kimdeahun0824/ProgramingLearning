@@ -65,11 +65,11 @@ namespace TrumpCardGame
                 mDealer.Cards.Clear();
                 mDeck.Init();
             }
-            if (mPlayer.Money >= 0)
+            if (mPlayer.Money <= 0)
             {
                 Console.WriteLine("당신은 파산했슴");
             }
-            if (mPlayer.Money >= 100000)
+            if (100000 <= mPlayer.Money)
             {
                 Console.WriteLine("당신은 너무 많이 뜯어가 쫓겨났음");
             }
