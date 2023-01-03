@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace TrumpCardGame
 {
-    internal class PokerCardGame : CardGame
+    internal class PokerCardGame : CardDraw, CardGamePlay
     {
         /**
          * - 컴퓨터가 5장의 카드를 뽑는다. (플레이어가 볼 수 있음)
