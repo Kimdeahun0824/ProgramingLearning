@@ -33,8 +33,6 @@ namespace TrumpCardGame
         }
         Deck mDeck;
         Player mPlayer;
-        PokerHandRangkings mPlayerHandRankings;
-        PokerHandRangkings mPDealerHandRankings;
         Dealer mDealer;
         bool gameEnd;
 
@@ -54,10 +52,11 @@ namespace TrumpCardGame
 
         public void Update()
         {
-            while (true)
+            while (!gameEnd)
             {
-                if(mPlayer.Money <= 0  || 100000 <= mPlayer.Money)
+                if (mPlayer.Money <= 0 || 100000 <= mPlayer.Money)
                 {
+                    gameEnd = true;
                     break;
                 }
                 CardGamePlay();
@@ -66,7 +65,7 @@ namespace TrumpCardGame
                 mDealer.Cards.Clear();
                 mDeck.Init();
             }
-            if(mPlayer.Money >= 0)
+            if (mPlayer.Money >= 0)
             {
                 Console.WriteLine("당신은 파산했슴");
             }
@@ -76,14 +75,15 @@ namespace TrumpCardGame
             }
         }
 
-        protected override Card CardDraw()
+
+        public Card CardDraw()
         {
             Card drawCard = mDeck.cards[0];
             mDeck.cards.Remove(drawCard);
             return drawCard;
         }
 
-        protected override void CardGamePlay()
+        public void CardGamePlay()
         {
             string GameBoard = "     ===========================\n" +
                     "      Welcome to Kyungil Casino\n" +
@@ -176,7 +176,7 @@ namespace TrumpCardGame
                 {
                     continue;
                 }
-                else if(5<userInput || userInput < 0)
+                else if (5 < userInput || userInput < 0)
                 {
                     continue;
                 }
@@ -263,53 +263,33 @@ namespace TrumpCardGame
 
         }
 
-        public void BoardScreen()
-        {
-
-        }
-
         public Pair<PokerHandRangkings, List<Card>> DeckCheck(List<Card> cards)
         {
             Pair<PokerHandRangkings, List<Card>> result = new Pair<PokerHandRangkings, List<Card>>();
 
             List<Card> resultCards = new List<Card>();
 
-            //bool Is_Own_Pair = false;
-            //bool Is_Two_Pair = false;
             bool Is_Triple = false;
-            //bool Is_Straight = false;
-            //bool Is_Back_Straight = false;
-            //bool Is_Mountain = false;
-            //bool Is_Flush = false;
             bool Is_Full_House = false;
             bool Is_Four_Card = false;
-            //bool Is_Straight_Flush = false;
-            //bool Is_Back_Straight_Flush = false;
-            //bool Is_Royal_Straight_Flush = false;
 
-            //foreach (var i in cards)
-            //{
-            //    Console.WriteLine("손패 : {0} / {1}", i.Name, i.Mark);
-            //}
 
             // 숫자별 파악   
             Dictionary<int, List<Card>> numbersDictionary = new Dictionary<int, List<Card>>();
 
-            for (int i = 0; i < 13; i++)
+            for (int i = 0; i < 14; i++)
             {
                 numbersDictionary[i] = new List<Card>();
             }
             for (int i = 0; i < cards.Count; i++)
             {
                 numbersDictionary[cards[i].Number - 1].Add(cards[i]);
-                //Console.WriteLine("테스트");
             }
 
             int pair = 0;
             // 풀하우스, 포카드 체크
             for (int i = 0; i < numbersDictionary.Count; i++)
             {
-                //Console.WriteLine($"테스트 : {numbersDictionary[i].Count}");
                 if (3 < numbersDictionary[i].Count)
                 {
                     Is_Four_Card = true;
@@ -328,9 +308,6 @@ namespace TrumpCardGame
             {
                 Is_Full_House = true;
             }
-            //Console.WriteLine("풀하우스 / 트리플 / 포카드 체크 : {0} / {1} / {2}", Is_Full_House, Is_Triple, Is_Four_Card);
-
-
 
             Dictionary<string, List<Card>> marksDictionary = new Dictionary<string, List<Card>>();
             marksDictionary.Add("♣", new List<Card>());
@@ -348,14 +325,13 @@ namespace TrumpCardGame
 
             for (int i = 0; i < marks.Length; i++)
             {
-                //Console.WriteLine($"{marks[i]}는 {marksDictionary[marks[i]].Count}개 있음");
                 // 플러시 체크
                 if (5 <= marksDictionary[marks[i]].Count)
                 {
                     //로티플 체크
                     for (int j = 0; j < marksDictionary[marks[i]].Count; j++)
                     {
-                        if (marksDictionary[marks[i]][j].Number == 1 ||
+                        if (marksDictionary[marks[i]][j].Number == 14 ||
                             marksDictionary[marks[i]][j].Number == 10 ||
                             marksDictionary[marks[i]][j].Number == 11 ||
                             marksDictionary[marks[i]][j].Number == 12 ||
@@ -380,7 +356,7 @@ namespace TrumpCardGame
                     // 백티플 체크
                     for (int j = 0; j < marksDictionary[marks[i]].Count; j++)
                     {
-                        if (marksDictionary[marks[i]][j].Number == 1 ||
+                        if (marksDictionary[marks[i]][j].Number == 14 ||
                             marksDictionary[marks[i]][j].Number == 2 ||
                             marksDictionary[marks[i]][j].Number == 3 ||
                             marksDictionary[marks[i]][j].Number == 4 ||
@@ -433,7 +409,6 @@ namespace TrumpCardGame
                     else if (4 < StraightCnt)
                     {
                         int minCnt = StraightCnt - 4;
-                        //Console.WriteLine("테스트 5 minCnt : {0} / {1}", minCnt, marksDictionary[marks[i]].Count - 1);
                         resultCards.Clear();
                         for (int j = minCnt; j < marksDictionary[marks[i]].Count; j++)
                         {
@@ -534,15 +509,6 @@ namespace TrumpCardGame
             }
             resultCards.Clear();
 
-            for (int i = 0; i < numbersDictionary.Count; i++)
-            {
-                //Console.WriteLine("##테스트 : {0}", numbersDictionary[i].Count);
-                for (int j = 0; j < numbersDictionary[i].Count; j++)
-                {
-                    //Console.WriteLine("##테스트####### : {0}", numbersDictionary[i][j].Number);
-                }
-            }
-
             // 마운틴 체크
             for (int i = 0; i < numbersDictionary.Count; i++)
             {
@@ -551,7 +517,7 @@ namespace TrumpCardGame
                 string maxMark = string.Empty;
                 for (int j = 0; j < numbersDictionary[i].Count; j++)
                 {
-                    if (numbersDictionary[i][j].Number == 1 ||
+                    if (numbersDictionary[i][j].Number == 14 ||
                         numbersDictionary[i][j].Number == 10 ||
                         numbersDictionary[i][j].Number == 11 ||
                         numbersDictionary[i][j].Number == 12 ||
@@ -568,7 +534,6 @@ namespace TrumpCardGame
                 if (maxMark != string.Empty)
                 {
                     resultCards.Add(numbersDictionary[i][maxIdx]);
-                    //Console.WriteLine("마운틴 테스트");
                 }
             }
             if (resultCards.Count == 5)
@@ -587,7 +552,7 @@ namespace TrumpCardGame
                 string maxMark = string.Empty;
                 for (int j = 0; j < numbersDictionary[i].Count; j++)
                 {
-                    if (numbersDictionary[i][j].Number == 1 ||
+                    if (numbersDictionary[i][j].Number == 14 ||
                         numbersDictionary[i][j].Number == 2 ||
                         numbersDictionary[i][j].Number == 3 ||
                         numbersDictionary[i][j].Number == 4 ||
@@ -604,7 +569,6 @@ namespace TrumpCardGame
                 if (maxMark != string.Empty)
                 {
                     resultCards.Add(numbersDictionary[i][maxIdx]);
-                    //Console.WriteLine("백스트레이트 테스트");
                 }
             }
             if (resultCards.Count == 5)
@@ -626,7 +590,6 @@ namespace TrumpCardGame
                 {
                     if (1 < numbersDictionary[j].Count)
                     {
-                        //Console.WriteLine("테스트 Idx {0} / {1} CASEA", i, j);
                         for (int k = 0; k < numbersDictionary[j].Count; k++)
                         {
                             if (maxMarkNum < numbersDictionary[j][k].MarkNum)
@@ -640,7 +603,6 @@ namespace TrumpCardGame
                     }
                     else if (0 < numbersDictionary[j].Count)
                     {
-                        //Console.WriteLine("테스트 Idx {0} / {1}", i, j);
                         resultCards.Add(numbersDictionary[j][0]);
                     }
                 }
@@ -712,9 +674,6 @@ namespace TrumpCardGame
             }
             resultCards.Clear();
 
-
-
-
             resultCards.Add(cards[cards.Count - 1]);
             result.LeftValue = PokerHandRangkings.TOP;
             result.RightValue = resultCards;
@@ -735,7 +694,7 @@ namespace TrumpCardGame
                 }
                 else if (dealerDeck.RightValue[dealerDeck.RightValue.Count - 1].Number == playerDeck.RightValue[playerDeck.RightValue.Count - 1].Number)
                 {
-                    if (dealerDeck.RightValue[dealerDeck.RightValue.Count - 1].MarkNum == playerDeck.RightValue[playerDeck.RightValue.Count - 1].MarkNum)
+                    if (dealerDeck.RightValue[dealerDeck.RightValue.Count - 1].MarkNum < playerDeck.RightValue[playerDeck.RightValue.Count - 1].MarkNum)
                     {
                         return true;
                     }

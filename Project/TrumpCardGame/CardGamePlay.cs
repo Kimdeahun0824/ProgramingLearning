@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace TrumpCardGame
 {
-    internal class CardGamePlay
+    public interface CardGamePlay
     {
+        void CardGamePlay();
     }
 }

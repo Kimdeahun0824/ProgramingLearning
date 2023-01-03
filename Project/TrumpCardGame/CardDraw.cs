@@ -8,6 +8,6 @@ namespace TrumpCardGame
 {
     public interface CardDraw
     {
-        void CardDraw();
+        Card CardDraw();
     }
 }

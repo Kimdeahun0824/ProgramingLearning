@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TrumpCardGame
 {
-    internal class Card
+    public class Card
     {
         private string mName;
         private int mNumber;
@@ -50,10 +50,5 @@ namespace TrumpCardGame
             get { return mMarkNum; }
             set { mMarkNum = value; }
         }
-
-
-
-
-
     }
 }

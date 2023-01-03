@@ -43,7 +43,7 @@ namespace TrumpCardGame
                             break;
                         case 1:
                             card.Name = "A";
-                            card.Number = 1;
+                            card.Number = 14;
                             break;
                         case 11:
                             card.Name = "J";
