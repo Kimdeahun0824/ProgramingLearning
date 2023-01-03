@@ -18,10 +18,6 @@ namespace TrumpCardGame
         public void Init()
         {
             CardSetup();
-            //foreach (Card card in mCards)
-            //{
-            //    Console.WriteLine("{0} / {1} / {2} / {3}", card.Name, card.Number, card.Mark, card.MarkNum);
-            //}
             CardShuffle();
         }
 

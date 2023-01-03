@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Runtime;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,14 +54,26 @@ namespace TrumpCardGame
 
         public void Update()
         {
-            //while (true)
-            //{
-            //    //CardGamePlay();
-
-            //}
-            CardGamePlay();
-
-
+            while (true)
+            {
+                if(mPlayer.Money <= 0  || 100000 <= mPlayer.Money)
+                {
+                    break;
+                }
+                CardGamePlay();
+                Console.Clear();
+                mPlayer.Cards.Clear();
+                mDealer.Cards.Clear();
+                mDeck.Init();
+            }
+            if(mPlayer.Money >= 0)
+            {
+                Console.WriteLine("당신은 파산했슴");
+            }
+            if (mPlayer.Money >= 100000)
+            {
+                Console.WriteLine("당신은 너무 많이 뜯어가 쫓겨났음");
+            }
         }
 
         protected override Card CardDraw()
@@ -83,36 +96,171 @@ namespace TrumpCardGame
             mDealer.AddCard(CardDraw());
             mDealer.AddCard(CardDraw());
 
-            Card card1 = new Card("A", "♥", 1, 2);
-            Card card2 = new Card("10", "♠", 10, 3);
-            Card card3 = new Card("J", "♣", 11, 0);
-            Card card4 = new Card("Q", "◆", 12, 1);
-            Card card5 = new Card("K", "♠", 13, 3);
-            Card card6 = new Card("7", "◆", 7, 1);
-            Card card7 = new Card("7", "♠", 7, 3);
-            //mPlayer.AddCard(CardDraw());
-            //mPlayer.AddCard(CardDraw());
-            //mPlayer.AddCard(CardDraw());
-            //mPlayer.AddCard(CardDraw());
-            //mPlayer.AddCard(CardDraw());
-            //mPlayer.AddCard(CardDraw());
-            //mPlayer.AddCard(CardDraw());
-            mPlayer.AddCard(card1);
-            mPlayer.AddCard(card2);
-            mPlayer.AddCard(card3);
-            mPlayer.AddCard(card4);
-            mPlayer.AddCard(card5);
-            mPlayer.AddCard(card6);
-            mPlayer.AddCard(card7);
-            List<Card> SortedList = mPlayer.Cards.OrderBy(x => x.Number).ToList();
-            //DeckCheck(SortedList).ToString();
-            Pair<PokerHandRangkings, List<Card>> test = new Pair<PokerHandRangkings, List<Card>>();
-            test = DeckCheck(SortedList);
-            Console.WriteLine(test.LeftValue);
-            foreach (var i in test.RightValue)
+            List<Card> sortedList = mDealer.Cards.OrderBy(x => x.MarkNum).ToList();
+            sortedList = sortedList.OrderBy(x => x.Number).ToList();
+
+            string dealerCards = string.Empty;
+
+            mDealer.Cards.Clear();
+
+            foreach (var i in sortedList)
             {
-                Console.WriteLine("{0} / {1} / {2} / {3}", i.Name, i.Number, i.Mark, i.MarkNum);
+                mDealer.Cards.Add(i);
             }
+            foreach (var i in mDealer.Cards)
+            {
+                dealerCards += i.Name + i.Mark + " ";
+            }
+            sortedList.Clear();
+            //for(int i = 0; i < mDealer.Cards.Count; i++)
+            //{
+            //    dealerCards += mDealer.Cards[i].Name + mDealer.Cards[i].Mark + " ";
+            //}
+            Console.WriteLine("컴퓨터의 카드 : {0}", dealerCards);
+            Console.WriteLine();
+            Console.WriteLine();
+            mPlayer.AddCard(CardDraw());
+            mPlayer.AddCard(CardDraw());
+            mPlayer.AddCard(CardDraw());
+            mPlayer.AddCard(CardDraw());
+            mPlayer.AddCard(CardDraw());
+
+            string playerCards = string.Empty;
+
+            sortedList = mPlayer.Cards.OrderBy(x => x.MarkNum).ToList();
+            sortedList = sortedList.OrderBy(x => x.Number).ToList();
+
+            mPlayer.Cards.Clear();
+
+            foreach (var i in sortedList)
+            {
+                mPlayer.Cards.Add(i);
+            }
+            foreach (var i in mPlayer.Cards)
+            {
+                playerCards += i.Name + i.Mark + " ";
+            }
+            Console.WriteLine("플레이어의 카드 : {0}", playerCards);
+            Console.WriteLine("남은 잔액 : {0}", mPlayer.Money);
+            Console.Write("베팅 금액을 입력 : ");
+            int bettingMoney = mPlayer.Betting();
+
+            mDealer.AddCard(CardDraw());
+            mDealer.AddCard(CardDraw());
+            sortedList = mDealer.Cards.OrderBy(x => x.MarkNum).ToList();
+            sortedList = sortedList.OrderBy(x => x.Number).ToList();
+            mDealer.Cards.Clear();
+            dealerCards = string.Empty;
+            foreach (var i in sortedList)
+            {
+                mDealer.Cards.Add(i);
+            }
+            foreach (var i in mDealer.Cards)
+            {
+                dealerCards += i.Name + i.Mark + " ";
+            }
+            sortedList.Clear();
+            Console.Clear();
+            Console.WriteLine(GameBoard);
+            Console.WriteLine("컴퓨터의 카드 : {0}", dealerCards);
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("플레이어의 카드 : {0}", playerCards);
+            Console.WriteLine("남은 잔액 : {0}", mPlayer.Money);
+            for (int i = 0; i < 2; i++)
+            {
+                int userInput = 0;
+                Console.Write("교체할 카드 선택  (0) = 선택 안함 :");
+                int.TryParse(Console.ReadLine(), out userInput);
+                if (userInput == 0)
+                {
+                    continue;
+                }
+                else if(5<userInput || userInput < 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    mPlayer.Cards.RemoveAt(userInput - 1);
+                    mPlayer.AddCard(CardDraw());
+                }
+                Console.Clear();
+                playerCards = string.Empty;
+
+                sortedList = mPlayer.Cards.OrderBy(x => x.MarkNum).ToList();
+                sortedList = sortedList.OrderBy(x => x.Number).ToList();
+
+                mPlayer.Cards.Clear();
+
+                foreach (var j in sortedList)
+                {
+                    mPlayer.Cards.Add(j);
+                }
+                foreach (var j in mPlayer.Cards)
+                {
+                    playerCards += j.Name + j.Mark + " ";
+                }
+                Console.WriteLine(GameBoard);
+                Console.WriteLine("컴퓨터의 카드 : {0}", dealerCards);
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("플레이어의 카드 : {0}", playerCards);
+                Console.WriteLine("남은 잔액 : {0}", mPlayer.Money);
+            }
+            Console.Clear();
+            Console.WriteLine(GameBoard);
+            Console.WriteLine("컴퓨터의 카드 : {0}", dealerCards);
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("플레이어의 카드 : {0}", playerCards);
+            Console.WriteLine("남은 잔액 : {0}", mPlayer.Money);
+
+            Pair<PokerHandRangkings, List<Card>> dealerDeck = new Pair<PokerHandRangkings, List<Card>>();
+            dealerDeck = DeckCheck(mDealer.Cards);
+            dealerDeck.RightValue = dealerDeck.RightValue.OrderBy(x => x.MarkNum).ToList();
+            dealerDeck.RightValue = dealerDeck.RightValue.OrderBy(x => x.Number).ToList();
+            Pair<PokerHandRangkings, List<Card>> playerDeck = new Pair<PokerHandRangkings, List<Card>>();
+            playerDeck = DeckCheck(mPlayer.Cards);
+            playerDeck.RightValue = playerDeck.RightValue.OrderBy(x => x.Number).ToList();
+            playerDeck.RightValue = playerDeck.RightValue.OrderBy(x => x.Number).ToList();
+            if (WinnerCheck(dealerDeck, playerDeck))
+            {
+                Console.Write("컴퓨터 덱 : ");
+                foreach (var i in dealerDeck.RightValue)
+                {
+                    Console.Write("{0}{1} ", i.Name, i.Mark);
+                }
+                Console.WriteLine("{0}", dealerDeck.LeftValue);
+                Console.Write("플레이어 덱 : ");
+                foreach (var i in playerDeck.RightValue)
+                {
+                    Console.Write("{0}{1} ", i.Name, i.Mark);
+                }
+                Console.WriteLine("{0}", playerDeck.LeftValue);
+                Console.WriteLine("플레이어 이김");
+                mPlayer.AddMoney(bettingMoney * 2);
+            }
+            else
+            {
+                Console.Write("컴퓨터 덱 : ");
+                foreach (var i in dealerDeck.RightValue)
+                {
+                    Console.Write("{0}{1} ", i.Name, i.Mark);
+                }
+                Console.WriteLine("{0}", dealerDeck.LeftValue);
+                Console.Write("플레이어 덱 : ");
+                foreach (var i in playerDeck.RightValue)
+                {
+                    Console.Write("{0}{1} ", i.Name, i.Mark);
+                }
+                Console.WriteLine("{0}", playerDeck.LeftValue);
+                Console.WriteLine("컴퓨터 이김");
+            }
+            int input = 0;
+            Console.WriteLine("넘어가려면 Enter");
+            int.TryParse(Console.ReadLine(), out input);
+
         }
 
         public void BoardScreen()
@@ -139,6 +287,11 @@ namespace TrumpCardGame
             //bool Is_Back_Straight_Flush = false;
             //bool Is_Royal_Straight_Flush = false;
 
+            //foreach (var i in cards)
+            //{
+            //    Console.WriteLine("손패 : {0} / {1}", i.Name, i.Mark);
+            //}
+
             // 숫자별 파악   
             Dictionary<int, List<Card>> numbersDictionary = new Dictionary<int, List<Card>>();
 
@@ -149,14 +302,14 @@ namespace TrumpCardGame
             for (int i = 0; i < cards.Count; i++)
             {
                 numbersDictionary[cards[i].Number - 1].Add(cards[i]);
-                Console.WriteLine("테스트");
+                //Console.WriteLine("테스트");
             }
 
             int pair = 0;
             // 풀하우스, 포카드 체크
             for (int i = 0; i < numbersDictionary.Count; i++)
             {
-                Console.WriteLine($"테스트 : {numbersDictionary[i].Count}");
+                //Console.WriteLine($"테스트 : {numbersDictionary[i].Count}");
                 if (3 < numbersDictionary[i].Count)
                 {
                     Is_Four_Card = true;
@@ -175,7 +328,7 @@ namespace TrumpCardGame
             {
                 Is_Full_House = true;
             }
-            Console.WriteLine("풀하우스 / 트리플 / 포카드 체크 : {0} / {1} / {2}", Is_Full_House, Is_Triple, Is_Four_Card);
+            //Console.WriteLine("풀하우스 / 트리플 / 포카드 체크 : {0} / {1} / {2}", Is_Full_House, Is_Triple, Is_Four_Card);
 
 
 
@@ -195,7 +348,7 @@ namespace TrumpCardGame
 
             for (int i = 0; i < marks.Length; i++)
             {
-                Console.WriteLine($"{marks[i]}는 {marksDictionary[marks[i]].Count}개 있음");
+                //Console.WriteLine($"{marks[i]}는 {marksDictionary[marks[i]].Count}개 있음");
                 // 플러시 체크
                 if (5 <= marksDictionary[marks[i]].Count)
                 {
@@ -280,7 +433,7 @@ namespace TrumpCardGame
                     else if (4 < StraightCnt)
                     {
                         int minCnt = StraightCnt - 4;
-                        Console.WriteLine("테스트 5 minCnt : {0} / {1}", minCnt, marksDictionary[marks[i]].Count - 1);
+                        //Console.WriteLine("테스트 5 minCnt : {0} / {1}", minCnt, marksDictionary[marks[i]].Count - 1);
                         resultCards.Clear();
                         for (int j = minCnt; j < marksDictionary[marks[i]].Count; j++)
                         {
@@ -383,23 +536,226 @@ namespace TrumpCardGame
 
             for (int i = 0; i < numbersDictionary.Count; i++)
             {
-                Console.WriteLine("##테스트 : {0}", numbersDictionary[i].Count);
+                //Console.WriteLine("##테스트 : {0}", numbersDictionary[i].Count);
                 for (int j = 0; j < numbersDictionary[i].Count; j++)
                 {
-                    Console.WriteLine("##테스트####### : {0}", numbersDictionary[i][j].Number);
+                    //Console.WriteLine("##테스트####### : {0}", numbersDictionary[i][j].Number);
                 }
             }
 
-            // 마운틴, 백스트레이트, 스트레이트 체크
-            
+            // 마운틴 체크
+            for (int i = 0; i < numbersDictionary.Count; i++)
+            {
+                int maxIdx = 0;
+                int maxMarkNum = -1;
+                string maxMark = string.Empty;
+                for (int j = 0; j < numbersDictionary[i].Count; j++)
+                {
+                    if (numbersDictionary[i][j].Number == 1 ||
+                        numbersDictionary[i][j].Number == 10 ||
+                        numbersDictionary[i][j].Number == 11 ||
+                        numbersDictionary[i][j].Number == 12 ||
+                        numbersDictionary[i][j].Number == 13)
+                    {
+                        if (maxMarkNum < numbersDictionary[i][j].MarkNum)
+                        {
+                            maxIdx = j;
+                            maxMarkNum = numbersDictionary[i][j].MarkNum;
+                            maxMark = numbersDictionary[i][j].Mark;
+                        }
+                    }
+                }
+                if (maxMark != string.Empty)
+                {
+                    resultCards.Add(numbersDictionary[i][maxIdx]);
+                    //Console.WriteLine("마운틴 테스트");
+                }
+            }
+            if (resultCards.Count == 5)
+            {
+                result.LeftValue = PokerHandRangkings.MOUNTAIN;
+                result.RightValue = resultCards;
+                return result;
+            }
+
+            resultCards.Clear();
+            // 백스트레이트 체크
+            for (int i = 0; i < numbersDictionary.Count; i++)
+            {
+                int maxIdx = 0;
+                int maxMarkNum = -1;
+                string maxMark = string.Empty;
+                for (int j = 0; j < numbersDictionary[i].Count; j++)
+                {
+                    if (numbersDictionary[i][j].Number == 1 ||
+                        numbersDictionary[i][j].Number == 2 ||
+                        numbersDictionary[i][j].Number == 3 ||
+                        numbersDictionary[i][j].Number == 4 ||
+                        numbersDictionary[i][j].Number == 5)
+                    {
+                        if (maxMarkNum < numbersDictionary[i][j].MarkNum)
+                        {
+                            maxIdx = j;
+                            maxMarkNum = numbersDictionary[i][j].MarkNum;
+                            maxMark = numbersDictionary[i][j].Mark;
+                        }
+                    }
+                }
+                if (maxMark != string.Empty)
+                {
+                    resultCards.Add(numbersDictionary[i][maxIdx]);
+                    //Console.WriteLine("백스트레이트 테스트");
+                }
+            }
+            if (resultCards.Count == 5)
+            {
+                result.LeftValue = PokerHandRangkings.BACK_STRAIGHT;
+                result.RightValue = resultCards;
+                return result;
+            }
+
+            resultCards.Clear();
+
+            // 스트레이트 체크
+            for (int i = numbersDictionary.Count - 1; 5 <= i; i--)
+            {
+                int maxIdx = 0;
+                int maxMarkNum = -1;
+                string maxMark = string.Empty;
+                for (int j = i; i - 5 < j; j--)
+                {
+                    if (1 < numbersDictionary[j].Count)
+                    {
+                        //Console.WriteLine("테스트 Idx {0} / {1} CASEA", i, j);
+                        for (int k = 0; k < numbersDictionary[j].Count; k++)
+                        {
+                            if (maxMarkNum < numbersDictionary[j][k].MarkNum)
+                            {
+                                maxMarkNum = numbersDictionary[j][k].MarkNum;
+                                maxMark = numbersDictionary[j][k].Mark;
+                                maxIdx = k;
+                            }
+                        }
+                        resultCards.Add(numbersDictionary[j][maxIdx]);
+                    }
+                    else if (0 < numbersDictionary[j].Count)
+                    {
+                        //Console.WriteLine("테스트 Idx {0} / {1}", i, j);
+                        resultCards.Add(numbersDictionary[j][0]);
+                    }
+                }
+                if (resultCards.Count == 5)
+                {
+                    result.LeftValue = PokerHandRangkings.STRAIGHT;
+                    result.RightValue = resultCards.OrderBy(x => x.Number).ToList();
+                    return result;
+                }
+                else
+                {
+                    resultCards.Clear();
+                }
+            }
+
+            // 트리플 체크
+            if (Is_Triple)
+            {
+                for (int i = numbersDictionary.Count - 1; 0 <= i; i--)
+                {
+                    if (2 < numbersDictionary[i].Count)
+                    {
+                        for (int j = 0; j < numbersDictionary[i].Count; j++)
+                        {
+                            resultCards.Add(numbersDictionary[i][j]);
+                        }
+                        if (resultCards.Count == 3)
+                        {
+                            result.LeftValue = PokerHandRangkings.TRIPLE;
+                            result.RightValue = resultCards.OrderBy(x => x.MarkNum).ToList();
+                            return result;
+                        }
+                        else
+                        {
+                            resultCards.Clear();
+                        }
+                    }
+                }
+            }
+            pair = 0;
+            // 페어 체크
+            for (int i = numbersDictionary.Count - 1; 0 <= i; i--)
+            {
+                if (1 < numbersDictionary[i].Count)
+                {
+                    pair++;
+                    for (int j = 0; j < numbersDictionary[i].Count; j++)
+                    {
+                        resultCards.Add(numbersDictionary[i][j]);
+                        if (3 < resultCards.Count)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (1 < pair)
+            {
+                result.LeftValue = PokerHandRangkings.TWO_PAIR;
+                result.RightValue = resultCards;
+                return result;
+            }
+            else if (pair == 1)
+            {
+                result.LeftValue = PokerHandRangkings.OWN_PAIR;
+                result.RightValue = resultCards;
+                return result;
+            }
+            resultCards.Clear();
 
 
 
 
-
+            resultCards.Add(cards[cards.Count - 1]);
+            result.LeftValue = PokerHandRangkings.TOP;
+            result.RightValue = resultCards;
             return result;
         }
 
+        public bool WinnerCheck(Pair<PokerHandRangkings, List<Card>> dealerDeck, Pair<PokerHandRangkings, List<Card>> playerDeck)
+        {
+            if (dealerDeck.LeftValue < playerDeck.LeftValue)
+            {
+                return true;
+            }
+            else if (dealerDeck.LeftValue == playerDeck.LeftValue)
+            {
+                if (dealerDeck.RightValue[dealerDeck.RightValue.Count - 1].Number < playerDeck.RightValue[playerDeck.RightValue.Count - 1].Number)
+                {
+                    return true;
+                }
+                else if (dealerDeck.RightValue[dealerDeck.RightValue.Count - 1].Number == playerDeck.RightValue[playerDeck.RightValue.Count - 1].Number)
+                {
+                    if (dealerDeck.RightValue[dealerDeck.RightValue.Count - 1].MarkNum == playerDeck.RightValue[playerDeck.RightValue.Count - 1].MarkNum)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            else
+            {
+                return false;
+            }
+            return false;
+        }
 
     }
 }
