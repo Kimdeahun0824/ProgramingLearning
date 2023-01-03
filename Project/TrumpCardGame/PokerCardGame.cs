@@ -84,11 +84,11 @@ namespace TrumpCardGame
             mDealer.AddCard(CardDraw());
 
             Card card1 = new Card("A", "♥", 1, 2);
-            Card card2 = new Card("A", "♠", 1, 3);
-            Card card3 = new Card("A", "♣", 1, 0);
-            Card card4 = new Card("6", "◆", 6, 1);
-            Card card5 = new Card("6", "♠", 6, 3);
-            Card card6 = new Card("7", "♠", 7, 3);
+            Card card2 = new Card("10", "♠", 10, 3);
+            Card card3 = new Card("J", "♣", 11, 0);
+            Card card4 = new Card("Q", "◆", 12, 1);
+            Card card5 = new Card("K", "♠", 13, 3);
+            Card card6 = new Card("7", "◆", 7, 1);
             Card card7 = new Card("7", "♠", 7, 3);
             //mPlayer.AddCard(CardDraw());
             //mPlayer.AddCard(CardDraw());
@@ -329,10 +329,9 @@ namespace TrumpCardGame
             StraightCnt = 0;
             resultCards.Clear();
 
-            // 풀하우스, 포카드 체크
-            for (int i = 0; i < numbersDictionary.Count; i++)
+            // 포카드 체크
+            for (int i = numbersDictionary.Count - 1; 0 < i; i--)
             {
-                Console.WriteLine("포문 몇번 도니 : {0}", i);
                 if (Is_Four_Card)
                 {
                     // 포카드 체크
@@ -347,9 +346,14 @@ namespace TrumpCardGame
                         return result;
                     }
                 }
-                if (Is_Triple && 0 < pair)
+            }
+            resultCards.Clear();
+
+            // 풀 하우스 체크             문제 : 트리플과 투페어가 나오면 투 페어중 높은 값을 대입해 줘야함
+            if (Is_Full_House)
+            {
+                for (int i = 0; i < numbersDictionary.Count; i++)
                 {
-                    // 풀하우스 체크
                     if (2 < numbersDictionary[i].Count)
                     {
                         for (int j = 0; j < numbersDictionary[i].Count; j++)
@@ -357,26 +361,25 @@ namespace TrumpCardGame
                             resultCards.Add(numbersDictionary[i][j]);
                         }
                     }
-                    if (1 < pair)
+                }
+                for (int i = numbersDictionary.Count - 1; 0 < i; i--)
+                {
+                    if (2 == numbersDictionary[i].Count)
                     {
-                        for (int k = 0; k < numbersDictionary[i].Count; k++)
-                        {
-                        }
-                    }
-                    else if (1 < numbersDictionary[i].Count)
-                    {
-                        Console.WriteLine("test");
                         for (int j = 0; j < numbersDictionary[i].Count; j++)
                         {
                             resultCards.Add(numbersDictionary[i][j]);
                         }
-                        result.LeftValue = PokerHandRangkings.FULL_HOUSE;
-                        result.RightValue = resultCards;
-                        return result;
+                        if (resultCards.Count == 5)
+                        {
+                            result.LeftValue = PokerHandRangkings.FULL_HOUSE;
+                            result.RightValue = resultCards;
+                            return result;
+                        }
                     }
                 }
             }
-
+            resultCards.Clear();
 
             for (int i = 0; i < numbersDictionary.Count; i++)
             {
@@ -388,53 +391,7 @@ namespace TrumpCardGame
             }
 
             // 마운틴, 백스트레이트, 스트레이트 체크
-            for (int i = 0; i < numbersDictionary.Count; i++)
-            {
-                // 마운틴 체크
-                for (int j = 0; j < numbersDictionary[i].Count; j++)
-                {
-                    if (numbersDictionary[i][j].Number == 1 ||
-                        numbersDictionary[i][j].Number == 10 ||
-                        numbersDictionary[i][j].Number == 11 ||
-                        numbersDictionary[i][j].Number == 12 ||
-                        numbersDictionary[i][j].Number == 13)
-                    {
-                        StraightCnt++;
-                        resultCards.Add(numbersDictionary[i][j]);
-                    }
-                }
-                if (5 <= StraightCnt)
-                {
-                    result.LeftValue = PokerHandRangkings.MOUNTAIN;
-                    result.RightValue = resultCards;
-                    return result;
-                }
-                StraightCnt = 0;
-                resultCards.Clear();
-                // 백스트레이트 구분
-                for (int j = 0; j < numbersDictionary[i].Count; j++)
-                {
-                    if (numbersDictionary[i][j].Number == 1 ||
-                        numbersDictionary[i][j].Number == 2 ||
-                        numbersDictionary[i][j].Number == 3 ||
-                        numbersDictionary[i][j].Number == 4 ||
-                        numbersDictionary[i][j].Number == 5)
-                    {
-                        StraightCnt++;
-                        resultCards.Add(numbersDictionary[i][j]);
-                    }
-                }
-                if (5 <= StraightCnt)
-                {
-                    result.LeftValue = PokerHandRangkings.MOUNTAIN;
-                    result.RightValue = resultCards;
-                    return result;
-                }
-                StraightCnt = 0;
-                resultCards.Clear();
-
-
-            }
+            
 
 
 
