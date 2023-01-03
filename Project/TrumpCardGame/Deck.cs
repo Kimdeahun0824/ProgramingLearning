@@ -18,10 +18,10 @@ namespace TrumpCardGame
         public void Init()
         {
             CardSetup();
-            foreach(Card card in mCards)
-            {
-                //Console.WriteLine("{0} / {1} / {2}", card.Name, card.Mark, card.Number);
-            }
+            //foreach (Card card in mCards)
+            //{
+            //    Console.WriteLine("{0} / {1} / {2} / {3}", card.Name, card.Number, card.Mark, card.MarkNum);
+            //}
             CardShuffle();
         }
 
@@ -63,6 +63,7 @@ namespace TrumpCardGame
                             break;
                     }
                     card.Mark = Marks[(i - 1) / 13];
+                    card.MarkNum = (i - 1) / 13;
                     mCards.Add(card);
                 }
             }

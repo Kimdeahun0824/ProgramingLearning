@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,13 +83,13 @@ namespace TrumpCardGame
             mDealer.AddCard(CardDraw());
             mDealer.AddCard(CardDraw());
 
-            Card card1 = new Card("A", "♠", 1);
-            Card card2 = new Card("K", "♠", 13);
-            Card card3 = new Card("Q", "♠", 12);
-            Card card4 = new Card("J", "◆", 11);
-            Card card5 = new Card("10", "♠", 10);
-            Card card6 = new Card("6", "♣", 6);
-            Card card7 = new Card("5", "♠", 5);
+            Card card1 = new Card("A", "♥", 1, 2);
+            Card card2 = new Card("A", "♠", 1, 3);
+            Card card3 = new Card("A", "♣", 1, 0);
+            Card card4 = new Card("6", "◆", 6, 1);
+            Card card5 = new Card("6", "♠", 6, 3);
+            Card card6 = new Card("7", "♠", 7, 3);
+            Card card7 = new Card("7", "♠", 7, 3);
             //mPlayer.AddCard(CardDraw());
             //mPlayer.AddCard(CardDraw());
             //mPlayer.AddCard(CardDraw());
@@ -102,8 +105,14 @@ namespace TrumpCardGame
             mPlayer.AddCard(card6);
             mPlayer.AddCard(card7);
             List<Card> SortedList = mPlayer.Cards.OrderBy(x => x.Number).ToList();
-            Console.WriteLine(DeckCheck(SortedList));
-
+            //DeckCheck(SortedList).ToString();
+            Pair<PokerHandRangkings, List<Card>> test = new Pair<PokerHandRangkings, List<Card>>();
+            test = DeckCheck(SortedList);
+            Console.WriteLine(test.LeftValue);
+            foreach (var i in test.RightValue)
+            {
+                Console.WriteLine("{0} / {1} / {2} / {3}", i.Name, i.Number, i.Mark, i.MarkNum);
+            }
         }
 
         public void BoardScreen()
@@ -111,236 +120,329 @@ namespace TrumpCardGame
 
         }
 
-        public PokerHandRangkings DeckCheck(List<Card> cards)
+        public Pair<PokerHandRangkings, List<Card>> DeckCheck(List<Card> cards)
         {
-            bool Is_Own_Pair = false;
-            bool Is_Two_Pair = false;
+            Pair<PokerHandRangkings, List<Card>> result = new Pair<PokerHandRangkings, List<Card>>();
+
+            List<Card> resultCards = new List<Card>();
+
+            //bool Is_Own_Pair = false;
+            //bool Is_Two_Pair = false;
             bool Is_Triple = false;
+            //bool Is_Straight = false;
+            //bool Is_Back_Straight = false;
+            //bool Is_Mountain = false;
+            //bool Is_Flush = false;
+            bool Is_Full_House = false;
             bool Is_Four_Card = false;
-            bool Is_Straight = false;
-            bool Is_Back_Straight = false;
-            bool Is_Mountain = false;
-            bool Is_Flush = false;
-            bool Is_FullHouse = false;
+            //bool Is_Straight_Flush = false;
+            //bool Is_Back_Straight_Flush = false;
+            //bool Is_Royal_Straight_Flush = false;
 
-            int clover = 0;
-            int heart = 0;
-            int diamond = 0;
-            int spade = 0;
+            // 숫자별 파악   
+            Dictionary<int, List<Card>> numbersDictionary = new Dictionary<int, List<Card>>();
 
-            int[] array = new int[13];
+            for (int i = 0; i < 13; i++)
+            {
+                numbersDictionary[i] = new List<Card>();
+            }
             for (int i = 0; i < cards.Count; i++)
             {
-                Console.WriteLine("{0} / {1} / {2}", cards[i].Name, cards[i].Mark, cards[i].Number);
-                array[cards[i].Number - 1]++;
-                if (cards[i].Mark == "♣")
-                {
-                    clover++;
-                }
-                else if (cards[i].Mark == "♥")
-                {
-                    heart++;
-                }
-                else if (cards[i].Mark == "◆")
-                {
-                    diamond++;
-                }
-                else if (cards[i].Mark == "♠")
-                {
-                    spade++;
-                }
+                numbersDictionary[cards[i].Number - 1].Add(cards[i]);
+                Console.WriteLine("테스트");
             }
 
-            Is_Own_Pair = Own_Pair_Check(array);
-            Is_Two_Pair = Two_Pair_Check(array);
-            Is_Triple = Triple_Check(array);
-            Is_FullHouse = FullHouse_Check(array);
-            Is_Four_Card = Four_Card_Check(array);
-            Is_Straight = Straight_Check(array);
-            Is_Back_Straight = Back_Straight_Check(array);
-            Is_Mountain = Mountain_Check(array);
-            Is_Flush = Flush_Check(clover, heart, diamond, spade);
-
-            if (Is_Mountain && Is_Flush)
-            {
-                return PokerHandRangkings.ROYAL_STARIGHT_FLUSH;
-            }
-            if (Is_Back_Straight && Is_Flush)
-            {
-                return PokerHandRangkings.BACK_STRAIGHT_FLUSH;
-            }
-            if (Is_Straight && Is_Flush)
-            {
-                return PokerHandRangkings.STRAIGHT_FLUSH;
-            }
-            if (Is_Four_Card)
-            {
-                return PokerHandRangkings.FOUR_CARD;
-            }
-            if (Is_FullHouse)
-            {
-                return PokerHandRangkings.FULL_HOUSE;
-            }
-            if (Is_Flush)
-            {
-                return PokerHandRangkings.FLUSH;
-            }
-            if (Is_Mountain)
-            {
-                return PokerHandRangkings.MOUNTAIN;
-            }
-            if (Is_Back_Straight)
-            {
-                return PokerHandRangkings.BACK_STRAIGHT;
-            }
-            if (Is_Straight)
-            {
-                return PokerHandRangkings.STRAIGHT;
-            }
-            if (Is_Triple)
-            {
-                return PokerHandRangkings.TRIPLE;
-            }
-            if (Is_Two_Pair)
-            {
-                return PokerHandRangkings.TWO_PAIR;
-            }
-            if (Is_Own_Pair)
-            {
-                return PokerHandRangkings.OWN_PAIR;
-            }
-
-            return PokerHandRangkings.TOP;
-        }
-
-        public bool Own_Pair_Check(int[] array)
-        {
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (1 < array[i])
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        public bool Two_Pair_Check(int[] array)
-        {
             int pair = 0;
-            for (int i = 0; i < array.Length; i++)
+            // 풀하우스, 포카드 체크
+            for (int i = 0; i < numbersDictionary.Count; i++)
             {
-                if (1 < array[i])
+                Console.WriteLine($"테스트 : {numbersDictionary[i].Count}");
+                if (3 < numbersDictionary[i].Count)
+                {
+                    Is_Four_Card = true;
+                }
+                else if (2 < numbersDictionary[i].Count)
+                {
+                    Is_Triple = true;
+                }
+                else if (1 < numbersDictionary[i].Count)
                 {
                     pair++;
                 }
             }
 
-            if (1 < pair)
+            if (1 <= pair && Is_Triple)
             {
-                return true;
+                Is_Full_House = true;
             }
-            else
+            Console.WriteLine("풀하우스 / 트리플 / 포카드 체크 : {0} / {1} / {2}", Is_Full_House, Is_Triple, Is_Four_Card);
+
+
+
+            Dictionary<string, List<Card>> marksDictionary = new Dictionary<string, List<Card>>();
+            marksDictionary.Add("♣", new List<Card>());
+            marksDictionary.Add("♥", new List<Card>());
+            marksDictionary.Add("◆", new List<Card>());
+            marksDictionary.Add("♠", new List<Card>());
+
+            string[] marks = { "♣", "♥", "◆", "♠" };
+            int StraightCnt = 0;
+            // 마크별 카드 저장
+            for (int i = 0; i < cards.Count; i++)
             {
-                return false;
+                marksDictionary[cards[i].Mark].Add(cards[i]);
             }
-        }
-        public bool Triple_Check(int[] array)
-        {
-            for (int i = 0; i < array.Length; i++)
+
+            for (int i = 0; i < marks.Length; i++)
             {
-                if (2 < array[i])
+                Console.WriteLine($"{marks[i]}는 {marksDictionary[marks[i]].Count}개 있음");
+                // 플러시 체크
+                if (5 <= marksDictionary[marks[i]].Count)
                 {
-                    return true;
-                }
-            }
-            return false;
-        }
-        public bool FullHouse_Check(int[] array)
-        {
-            int pair = 0;
-            bool Triple = false;
-            for (int i = 0; i < array.Length; i++)
-            {
-                Console.WriteLine("트리플 체크 : {0}", array[i]);
-                if (2 < array[i])
-                {
-                    Triple = true;
-                }
-                if (1 < array[i])
-                {
-                    pair++;
-                }
-            }
-            if (1 < pair && Triple)
-            {
-                return true;
-            }
-            return false;
-        }
-        public bool Four_Card_Check(int[] array)
-        {
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (3 < array[i])
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        public bool Flush_Check(int clover, int heart, int diamond, int spade)
-        {
-            if (5 <= clover || 5 <= heart || 5 <= diamond || 5 <= spade)
-            {
-                return true;
-            }
-            return false;
-        }
-        public bool Straight_Check(int[] array)
-        {
-            for (int i = 0; i < array.Length - 5; i++)
-            {
-                int temp = 0;
-                if (array[i] == 0) continue;
-                for (int j = i; j < i + 5; j++)
-                {
-                    if (!(0 < array[j]))
+                    //로티플 체크
+                    for (int j = 0; j < marksDictionary[marks[i]].Count; j++)
                     {
-                        break;
-                    }
-                    temp++;
-                    if (temp == 5)
+                        if (marksDictionary[marks[i]][j].Number == 1 ||
+                            marksDictionary[marks[i]][j].Number == 10 ||
+                            marksDictionary[marks[i]][j].Number == 11 ||
+                            marksDictionary[marks[i]][j].Number == 12 ||
+                            marksDictionary[marks[i]][j].Number == 13)
+                        {
+                            resultCards.Add(marksDictionary[marks[i]][j]);
+                            StraightCnt++;
+                        }
+                    }   // loop : 로티플 체크
+                    if (5 <= StraightCnt)
                     {
-                        return true;
+                        result.RightValue = resultCards;
+                        result.LeftValue = PokerHandRangkings.ROYAL_STARIGHT_FLUSH;
+                        return result;
+                    }
+                    else
+                    {
+                        StraightCnt = 0;
+                        resultCards.Clear();
+                    }
+
+                    // 백티플 체크
+                    for (int j = 0; j < marksDictionary[marks[i]].Count; j++)
+                    {
+                        if (marksDictionary[marks[i]][j].Number == 1 ||
+                            marksDictionary[marks[i]][j].Number == 2 ||
+                            marksDictionary[marks[i]][j].Number == 3 ||
+                            marksDictionary[marks[i]][j].Number == 4 ||
+                            marksDictionary[marks[i]][j].Number == 5)
+                        {
+                            resultCards.Add(marksDictionary[marks[i]][j]);
+                            StraightCnt++;
+                        }
+                    }   // loop : 백티플 체크
+                    if (5 <= StraightCnt)
+                    {
+                        result.RightValue = resultCards;
+                        result.LeftValue = PokerHandRangkings.BACK_STRAIGHT_FLUSH;
+                        return result;
+                    }
+                    else
+                    {
+                        StraightCnt = 0;
+                        resultCards.Clear();
+                    }
+                    // 스트레이트 체크
+                    for (int j = 0; j < marksDictionary[marks[i]].Count; j++)
+                    {
+                        for (int k = j; k < marksDictionary[marks[i]].Count; k++)
+                        {
+                            if (k == j) continue;
+                            if (marksDictionary[marks[i]][j].Number + 1 == marksDictionary[marks[i]][k].Number)
+                            {
+                                StraightCnt++;
+                                resultCards.Add(marksDictionary[marks[i]][j]);
+                                break;
+                                //continue;
+                            }
+                            else
+                            {
+                                StraightCnt = 0;
+                                resultCards.Clear();
+                                break;
+                            }
+                        }
+                    }
+                    if (4 == StraightCnt)
+                    {
+                        resultCards.Add(marksDictionary[marks[i]][marksDictionary[marks[i]].Count - 1]);
+                        result.RightValue = resultCards;
+                        result.LeftValue = PokerHandRangkings.STRAIGHT_FLUSH;
+                        return result;
+                    }
+                    // 스티플 큰수부터 대입
+                    else if (4 < StraightCnt)
+                    {
+                        int minCnt = StraightCnt - 4;
+                        Console.WriteLine("테스트 5 minCnt : {0} / {1}", minCnt, marksDictionary[marks[i]].Count - 1);
+                        resultCards.Clear();
+                        for (int j = minCnt; j < marksDictionary[marks[i]].Count; j++)
+                        {
+                            resultCards.Add(marksDictionary[marks[i]][j]);
+                        }
+                        result.RightValue = resultCards;
+                        result.LeftValue = PokerHandRangkings.STRAIGHT_FLUSH;
+                        return result;
+                    }
+                    else
+                    {
+                        StraightCnt = 0;
+                        resultCards.Clear();
+                    }
+
+                    // 위에 조건식에서 return되지 않으면 + 족보가 풀하우스, 포카드가 아니면
+                    if (Is_Full_House || Is_Four_Card)
+                    {
+                        /* Do Nothing */
+                    }
+                    else
+                    {
+                        if (5 < marksDictionary[marks[i]].Count)
+                        {
+                            int minCnt = marksDictionary[marks[i]].Count - 5;
+                            for (int j = minCnt; j < marksDictionary[marks[i]].Count; j++)
+                            {
+                                resultCards.Add(marksDictionary[marks[i]][j]);
+                            }
+                        }
+                        else
+                        {
+                            for (int j = 0; j < marksDictionary[marks[i]].Count; j++)
+                            {
+                                resultCards.Add(marksDictionary[marks[i]][j]);
+                            }
+                        }
+
+                        result.RightValue = resultCards;
+                        result.LeftValue = PokerHandRangkings.FLUSH;
+                        return result;
+                    }
+                }
+            }       // 플러시 체크
+
+            StraightCnt = 0;
+            resultCards.Clear();
+
+            // 풀하우스, 포카드 체크
+            for (int i = 0; i < numbersDictionary.Count; i++)
+            {
+                Console.WriteLine("포문 몇번 도니 : {0}", i);
+                if (Is_Four_Card)
+                {
+                    // 포카드 체크
+                    if (3 < numbersDictionary[i].Count)
+                    {
+                        for (int j = 0; j < numbersDictionary[i].Count; j++)
+                        {
+                            resultCards.Add(numbersDictionary[i][j]);
+                        }
+                        result.LeftValue = PokerHandRangkings.FOUR_CARD;
+                        result.RightValue = resultCards;
+                        return result;
+                    }
+                }
+                if (Is_Triple && 0 < pair)
+                {
+                    // 풀하우스 체크
+                    if (2 < numbersDictionary[i].Count)
+                    {
+                        for (int j = 0; j < numbersDictionary[i].Count; j++)
+                        {
+                            resultCards.Add(numbersDictionary[i][j]);
+                        }
+                    }
+                    if (1 < pair)
+                    {
+                        for (int k = 0; k < numbersDictionary[i].Count; k++)
+                        {
+                        }
+                    }
+                    else if (1 < numbersDictionary[i].Count)
+                    {
+                        Console.WriteLine("test");
+                        for (int j = 0; j < numbersDictionary[i].Count; j++)
+                        {
+                            resultCards.Add(numbersDictionary[i][j]);
+                        }
+                        result.LeftValue = PokerHandRangkings.FULL_HOUSE;
+                        result.RightValue = resultCards;
+                        return result;
                     }
                 }
             }
-            return false;
-        }
-        public bool Back_Straight_Check(int[] array)
-        {
-            int temp = 0;
-            for (int i = 0; i < 5; i++)
+
+
+            for (int i = 0; i < numbersDictionary.Count; i++)
             {
-                if (!(0 < array[i]))
+                Console.WriteLine("##테스트 : {0}", numbersDictionary[i].Count);
+                for (int j = 0; j < numbersDictionary[i].Count; j++)
                 {
-                    break;
-                }
-                temp++;
-                if (temp == 5)
-                {
-                    return true;
+                    Console.WriteLine("##테스트####### : {0}", numbersDictionary[i][j].Number);
                 }
             }
-            return false;
-        }
-        public bool Mountain_Check(int[] array)
-        {
-            if (0 < array[0] && 0 < array[12] && 0 < array[11] && 0 < array[10] && 0 < array[9])
+
+            // 마운틴, 백스트레이트, 스트레이트 체크
+            for (int i = 0; i < numbersDictionary.Count; i++)
             {
-                return true;
+                // 마운틴 체크
+                for (int j = 0; j < numbersDictionary[i].Count; j++)
+                {
+                    if (numbersDictionary[i][j].Number == 1 ||
+                        numbersDictionary[i][j].Number == 10 ||
+                        numbersDictionary[i][j].Number == 11 ||
+                        numbersDictionary[i][j].Number == 12 ||
+                        numbersDictionary[i][j].Number == 13)
+                    {
+                        StraightCnt++;
+                        resultCards.Add(numbersDictionary[i][j]);
+                    }
+                }
+                if (5 <= StraightCnt)
+                {
+                    result.LeftValue = PokerHandRangkings.MOUNTAIN;
+                    result.RightValue = resultCards;
+                    return result;
+                }
+                StraightCnt = 0;
+                resultCards.Clear();
+                // 백스트레이트 구분
+                for (int j = 0; j < numbersDictionary[i].Count; j++)
+                {
+                    if (numbersDictionary[i][j].Number == 1 ||
+                        numbersDictionary[i][j].Number == 2 ||
+                        numbersDictionary[i][j].Number == 3 ||
+                        numbersDictionary[i][j].Number == 4 ||
+                        numbersDictionary[i][j].Number == 5)
+                    {
+                        StraightCnt++;
+                        resultCards.Add(numbersDictionary[i][j]);
+                    }
+                }
+                if (5 <= StraightCnt)
+                {
+                    result.LeftValue = PokerHandRangkings.MOUNTAIN;
+                    result.RightValue = resultCards;
+                    return result;
+                }
+                StraightCnt = 0;
+                resultCards.Clear();
+
+
             }
-            return false;
+
+
+
+
+
+            return result;
         }
+
+
     }
 }
